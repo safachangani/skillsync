@@ -1,0 +1,79 @@
+.post-req{
+    margin: 1rem
+}
+.post h1 {
+    color: ;
+}
+.post-req form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+.post-req form input{
+   
+    padding: .5rem;
+}
+ .post-req form textarea{
+    height: 20vh;
+}
+.post-req form button{
+    margin-left: auto;
+    padding: 0.7rem;
+    background: #945bf8;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+} 
+.tab {
+    /* overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1; */
+}
+
+
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tabcontent {
+ 
+}
+
+/* #message {
+    margin-top: 20px;
+    color: green;
+} */
+
+
+.tab {
+    display: flex;
+    padding-bottom: 1rem;
+}
+
+/* Hide the radio inputs */
+.tab input[type="radio"] {
+    display: none;
+}
+
+/* Style for the labels */
+.tab label {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #ccc;
+    border: 2px solid #666;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+}
+
+/* Style for the selected label */
+.tab input[type="radio"]:checked + label {
+    background-color: #66c;
+    color: #fff;
+}

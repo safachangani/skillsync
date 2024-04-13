@@ -1,0 +1,40 @@
+/* UpdateDetails.css */
+
+.update-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .update-details span {
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .update-details h2 {
+    color: #222;
+    font-size: 20px;
+    margin-top: 10px;
+  }
+  
+  .update-details p {
+    color: #666;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  /* .view-details-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+  } */
+  
+  .view-details-link:hover {
+    text-decoration: underline;
+  }
+  

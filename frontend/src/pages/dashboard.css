@@ -1,0 +1,13 @@
+.dashboard {
+    display: flex;
+  }
+  
+  .content {
+    flex: 1;
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar-expanded .content {
+    margin-left: 200px; /* Adjust the margin to make space for the expanded sidebar */
+  }
+  
