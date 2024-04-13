@@ -17,16 +17,16 @@ function Update() {
           Authorization: `Bearer ${token}` // Attach the token in the Authorization header
         }
       })
-      .then(response => {
-        console.log(response.data);
-        // Set the updates in state
-        setUpdates(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching email:', error);
-      });
+        .then(response => {
+          console.log(response.data);
+          // Set the updates in state
+          setUpdates(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching email:', error);
+        });
     }
-  }, []); 
+  }, []);
 
   return (
     <div className='update'>
@@ -35,10 +35,11 @@ function Update() {
           <span>{update.tab}</span>
           <h2>{update.heading}</h2>
           <p>{update.description}</p>
-          <Link to={`/update/${update._id}`}className="view-details-link">View Details</Link>
+          {console.log(update)}
+          <Link to={`/update/${update._id}`} state={{ data:update}} className="view-details-link">View Details</Link>
         </div>
       ))}
- 
+
     </div>
   )
 }
