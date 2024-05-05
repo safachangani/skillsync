@@ -7,39 +7,38 @@ function Update() {
   const [updates, setUpdates] = useState([]);
 
   useEffect(() => {
-    // Get the token from localStorage
     const token = localStorage.getItem('user-token');
 
     if (token) {
-      // If token is available, make axios request with token in the headers
       axios.get('/get-updates', {
         headers: {
-          Authorization: `Bearer ${token}` // Attach the token in the Authorization header
+          Authorization: `Bearer ${token}`
         }
       })
-        .then(response => {
-          console.log(response.data);
-          // Set the updates in state
-          setUpdates(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching email:', error);
-        });
+      .then(response => {
+        setUpdates(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching updates:', error);
+      });
     }
   }, []);
 
   return (
-    <div className='update'>
+    <div className='update-container'>
       {updates.map((update, index) => (
-        <div className='update-details' key={index}>
-          <span>{update.tab}</span>
-          <h2>{update.heading}</h2>
-          <p>{update.description}</p>
-          {console.log(update)}
-          <Link to={`/update/${update._id}`} state={{ data:update}} className="view-details-link">View Details</Link>
+        <div className='update-card' key={index}>
+          <span className='tab'>{update.tab}</span>
+          <div className='user-info'>
+          <img src={`http://localhost:9000/skillsync/uploads/${update.filename}`} className="avatar-u" alt="avatar" />
+            <span className='user-name'>{update.username}</span>
+          </div>
+          <h2 className='heading'>{update.heading}</h2>
+          <p className='description'>{update.description}</p>
+          <Link to={`/update/${update._id}`} state={{ data:update._id}} className="view-details-link">View Details</Link>
         </div>
       ))}
-
     </div>
   )
 }

@@ -1,0 +1,58 @@
+.profile-container {
+    margin: 2rem;
+  }
+  
+  .edit-profile-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: #ac7dff;
+    font-weight: bold;
+    border: 1px solid;
+  }
+  
+  .profile-showcase {
+    display: flex;
+    gap: 3rem;
+  }
+  
+  .avatar-container {
+    margin-right: 20px;
+  }
+  
+  .avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  
+  .profile-info {
+    flex: 1;
+  }
+  
+  .skills,
+  .education,
+  .social-links {
+    margin-bottom: 20px;
+  }
+  
+  .skills ul,
+  .social-links ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .skills li,
+  .social-links li {
+    margin-bottom: 5px;
+  }
+  
+  .social-links a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .social-links a:hover {
+    text-decoration: underline;
+  }
+  

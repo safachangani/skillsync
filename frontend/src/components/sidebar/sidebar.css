@@ -77,13 +77,17 @@ ul{
  
 }
 .active{
-  border-left: #FF9800 4px solid;
+  border-left: #9954ed 4px solid;
+  background: #f7eeff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
 .restaurant-element a{
   text-decoration: none;
   color: black;
   display: flex;
+  font-weight: 800;
+  font-size: 17px;
   gap: 1rem;
   padding: 0rem 1rem;
 

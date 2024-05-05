@@ -6,12 +6,12 @@ body {
     padding: 0;
 }
 
-main {
+/* main {
     font-family: system-ui, sans-serif;
     height: 300vh;
     margin-block-start: 10rem;
     text-align: center;
-}
+} */
 
 .navigation {
     color: #503581;
@@ -87,6 +87,7 @@ main {
 
 .navigation-icons {
     display: flex;
+    align-items: center;
 }
 
 .navigation-search-container input:focus {
@@ -160,4 +161,22 @@ font-weight: 700;
 #name-a{
     display: flex;
     gap: .5rem;
+}
+.notification-dropdown{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.notification-dropdown .notification-item{
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+.notification-dropdown .notification-item button{
+    padding: .4rem;
+}
+.br-profile{
+    padding-right: 1rem;
+    font-weight: 600;
+    font-size: large;
 }

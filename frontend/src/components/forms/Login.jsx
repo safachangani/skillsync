@@ -49,7 +49,9 @@ function UserLogin() {
         </form>
         {errorMessage && <p>{errorMessage}</p>}
       </div>
-      <div className="vector"></div>
+      <div className="vector">
+        <img src="https://img.freepik.com/free-vector/script-writing-software-engineering-coding-workshop-code-created-workshop-online-programming-course-apps-games-development-class-concept_335657-818.jpg?size=626&ext=jpg&ga=GA1.1.1412446893.1705104000&semt=ais" alt="" />
+      </div>
     </div>
   );
 }

@@ -1,0 +1,41 @@
+
+  .form- {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    gap: 2rem;
+    
+  }
+  
+  .form-title {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .announcement {
+    background-color: #ebdeff;;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .announcement-topic {
+    
+  }
+  
+  .announcement-location,
+  .announcement-date,
+  .announcement-time {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .allocation-form {
+    margin-top: 20px;
+  }
+  

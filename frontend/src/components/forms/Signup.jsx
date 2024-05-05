@@ -48,7 +48,9 @@ function Signup() {
           <p>Already have an account? <Link to={'/login'}>Login</Link></p>
         </form>
       </div>
-      <div className="vector"></div>
+      <div className="vector">
+        <img src="https://img.freepik.com/free-vector/script-writing-software-engineering-coding-workshop-code-created-workshop-online-programming-course-apps-games-development-class-concept-pinkish-coral-bluevector-isolated-illustration_335657-1253.jpg" alt="" />
+      </div>
     </div>
   );
 }

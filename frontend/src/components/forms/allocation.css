@@ -1,0 +1,59 @@
+
+header, footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.allocation-form, .notification {
+    margin-bottom: 30px;
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+
+label {
+    margin-bottom: 5px;
+}
+
+input, select{
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+} */
+
+.notification-message {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #5DADE2;
+}
+
+#change{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#location{
+    width: 65%;
+}

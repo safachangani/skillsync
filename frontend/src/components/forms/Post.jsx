@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from '../../axios'
 import { Link, useNavigate } from 'react-router-dom';
+import Navbar from '../navbar/Navbar';
 function Post() {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
@@ -31,9 +32,11 @@ function Post() {
     };
 
     return (
+        <>
+        <Navbar></Navbar>
         <div className='post-req'>
-            <h1>SKILLSYNC</h1>
-            <h2>Tell us what you need done.</h2>
+            {/* <h1>SKILLSYNC</h1> */}
+            <h2><span id='unlock'>Unlock your potential!</span> Learn or teach a skill with us.<br></br> Post your request or offer now. Let's thrive together!</h2>
 
             <div id="request" className="tabcontent">
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,6 +60,7 @@ function Post() {
 
             <div id="message">{message}</div>
         </div>
+        </>
     );
 }
 

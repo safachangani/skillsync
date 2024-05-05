@@ -17,13 +17,27 @@ export const requestOfferSchema = yup.object().shape({
     heading: yup.string().required('Heading is required'),
     description: yup.string().required('Description is required').min(100, 'Description must be at least 100 characters')
 });
-// export const fileFormSchema = yup.object().shape({
-//     title: yup.string().required(),
-//     lessonName: yup.string().required(),
-//     tutorial: yup.mixed().required('Please upload a file')
-// })
 
-// export const addLessonSchema = yup.object().shape({
-//     lessonName: yup.string().required(),
-//     tutorial: yup.mixed().required('Please upload a file')
-// })
+export const EditProfileSchema = yup.object().shape({
+    username: yup.string()
+      .required('Username is required'),
+    about: yup.string(),
+    skills: yup.array()
+      .of(yup.string())
+      .min(1, 'At least one skill is required'),
+    educationLevel: yup.string()
+      .required('Education level is required'),
+    linkedinURL: yup.string()
+      .url('Invalid LinkedIn URL'),
+    websiteURL: yup.string()
+      .url('Invalid GitHub URL'),
+    websiteURL: yup.string()
+      .url('Invalid Website URL'),
+  });
+  
+  export const allocationSchema = yup.object().shape({
+    topic: yup.string().required(),
+    location: yup.string().required(),
+    date: yup.string().required(),
+    time: yup.string().required(),
+  });
