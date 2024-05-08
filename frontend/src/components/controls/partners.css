@@ -3,6 +3,7 @@
   flex-direction: column;
   background: white;
   padding: 2rem;
+  gap: 2rem;
 }
 .partner-card{
   display: flex;
@@ -123,7 +124,8 @@
 }
 .comment-input-container {
   display: flex;
-  align-items: center;
+  align-items: end;
+  
 }
 
 .comment-input-container input[type="text"] {
@@ -132,6 +134,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-right: 8px;
+  margin-bottom: 0;
+  width: 300px;
+  height: 10vh;
 }
 
 .comment-input-container button {

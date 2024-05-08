@@ -56,3 +56,121 @@
     text-decoration: underline;
   }
   
+
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .edit-profile-link {
+    margin-bottom: 20px;
+    font-size: 18px;
+    /* color: #007bff; */
+    text-decoration: none;
+    
+  }
+  
+  .profile-showcase {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: 80%;
+    max-width: 1200px;
+    margin-bottom: 40px;
+    border: 2px solid #bc6fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .avatar-container {
+    margin-right: 20px;
+  }
+  
+  .avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profile-info {
+    flex-grow: 1;
+  }
+  
+  .username {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .about {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .skills,
+  .education,
+  .social-links {
+    margin-bottom: 20px;
+  }
+  
+  .skills h3,
+  .education h3,
+  .social-links h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .skills ul,
+  .education p,
+  .social-links ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .skills ul li,
+  .education p,
+  .social-links ul li {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .social-links ul li a {
+    color: #550398;
+    text-decoration: none;
+  }
+  
+  .social-links ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .profile-showcase {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .avatar-container {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+  .skills ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .skills ul li {
+    background-color: #6202a1;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 20px;
+  }
+  

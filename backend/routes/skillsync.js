@@ -128,7 +128,7 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
     try {
         // Find all documents in the collection
         const postRequestOffers = await PostRequestOffer.find({}).exec();
-        
+        console.log(postRequestOffers);
         const updatedPostRequestOffers = [];
         for (let i = 0; i < postRequestOffers.length; i++) {
             const postRequestOffer = postRequestOffers[i];
@@ -136,7 +136,7 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
         
             // Fetch userProfile for the current userId
             const userProfile = await UserProfile.findOne({ userId }).exec();
-        
+            
             if (userProfile) {
                 const filename = userProfile.filename;
                 const username = userProfile.username;
@@ -161,6 +161,18 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+router.get("/get-update/:postId",authenticateToken,async(req,res)=>{
+    try{
+        const postId = req.params.postId;
+        console.log("hi",postId);
+        const postReqOff = await PostRequestOffer.findOne({_id:postId });
+        console.log(postReqOff);
+        res.status(201).json({ postReqOff });
+    } catch(err){
+        console.log(err);
+    }
+})
 
 router.post('/edit-profile', authenticateToken, upload.single('avatar'), async (req, res) => {
     console.log('hi');

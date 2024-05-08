@@ -143,8 +143,7 @@ function Partners() {
         console.log(messageCollection);
         setMessages(messageCollection)
 
-        // Update the messages state with messages organized by room ID
-        // setMessages(messagesByRoom);
+      
         console.log(messages);
       } catch (error) {
         console.error('Error fetching messages:', error);

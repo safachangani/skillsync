@@ -1,8 +1,6 @@
 .container{
-    /* background: url(); */
     display: flex;
-    padding: 2rem;
-    
+    padding: 2rem 5rem;
     margin: 4rem 6rem;
     height: 70vh;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
@@ -40,7 +38,7 @@
 }
 .container div{
     width: 50%;
-    padding-left: 6rem;
+    height: auto;
 }
 .form p{
     margin: 0;

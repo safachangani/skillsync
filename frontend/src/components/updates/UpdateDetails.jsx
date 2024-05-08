@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './user-details.css';
 import axios from '../../axios';
+import Update from './Update';
 
 function UpdateDetails() {
   const location = useLocation();
@@ -16,23 +17,28 @@ function UpdateDetails() {
       try {
         const token = localStorage.getItem('user-token');
         // Fetch update data based on postId
-        const response = await axios.get(`/get-update/${postId}`,{
+        const response = await axios.get(`/get-update/${postId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log(response.data);
-        setUpdateData(response.data.update);
+        
+        const fetchedUpdateData = response.data.postReqOff;
+        console.log(fetchedUpdateData.userId);
+        setUpdateData(fetchedUpdateData);
+
         // Fetch user ID
-        // const token = localStorage.getItem('user-token');
         const userResponse = await axios.get('/get-userId', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        const userId = userResponse.data.userId;
-        setUserId(userId);
-        setIsUserPost(userId === response.data.userId); // Check if it's the user's post
+        const fetchedUserId = userResponse.data.userId;
+        setUserId(fetchedUserId);
+        
+        console.log("hello");
+        console.log(fetchedUserId, fetchedUpdateData.userId);
+        setIsUserPost(fetchedUpdateData.userId === fetchedUserId); // Check if it's the user's post
       } catch (error) {
         console.error('Error fetching update data:', error);
       }
@@ -41,6 +47,7 @@ function UpdateDetails() {
       fetchUpdateData();
     }
   }, [postId]);
+
 
   const sendNotification = async () => {
     try {

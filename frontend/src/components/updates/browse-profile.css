@@ -1,62 +1,78 @@
+/* Add these styles to your existing CSS file */
+
+/* Search Container */
 .search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .search-input {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .search-button {
-    padding: 10px 20px;
-    margin-left: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .profiles-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .profile-card {
-    width: 300px;
-    margin: 10px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .profile-card h2 {
-    margin-top: 0;
-  }
-  
-  .profile-card p {
-    margin-bottom: 10px;
-  }
-  
-  .profile-details {
-    margin-top: 10px;
-  }
-  
-  .profile-details p {
-    margin-bottom: 5px;
-  }
-  
-  .profile-card img {
-    width: 100%;
-    border-radius: 5px;
-  }
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.search-input {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.search-button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background-color:  #a748fa;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 8vh;
+}
+
+/* Profiles Container */
+.profiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Profile Card */
+.profile-card {
+  width: 300px;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.profile-card h2 {
+  margin-top: 0;
+}
+
+.profile-card p {
+  margin-bottom: 10px;
+  overflow: hidden; /* Ensure text doesn't overflow */
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Limit to 4 lines */
+  -webkit-box-orient: vertical;
+}
+
+/* Profile Details */
+.profile-details {
+  margin-top: 10px;
+}
+
+.profile-details p {
+  margin-bottom: 5px;
+}
+
+/* Profile Image */
+.profile-card img {
+  width: 100%;
+  border-radius: 5px;
+  height: 40vh;
+  object-fit: cover;
+}
+
 .profile--{
-    display: flex;
-}  
+  display: flex;
+}

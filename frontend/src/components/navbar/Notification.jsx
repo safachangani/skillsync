@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../axios';
-import './notification.css'
+import './notification.css';
 
 function NotificationDropdown({ handleSidebarToggle }) {
     const [notifications, setNotifications] = useState([]);
@@ -9,8 +9,14 @@ function NotificationDropdown({ handleSidebarToggle }) {
         // Fetch notifications from the server
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get('/notifications');
-                setNotifications(response.data.notifications);
+                const token = localStorage.getItem('user-token');
+                const response = await axios.get('/get-notifications',{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log(response.data);
+                setNotifications(response.data.notifications); // Assuming response.data is an array of notifications
             } catch (error) {
                 console.error('Error fetching notifications:', error);
             }
@@ -23,16 +29,16 @@ function NotificationDropdown({ handleSidebarToggle }) {
         <div className="notification-dropdown">
             <div className="notification-header">
                 <h3>Notifications</h3>
-                <button onClick={handleSidebarToggle}>Close</button>
             </div>
             <div className="notification-list">
                 {notifications.length === 0 ? (
                     <p>No notifications</p>
                 ) : (
-                    notifications.map(notification => (
-                        <div key={notification.id} className="notification-item">
+                    notifications.map((notification, index) => (
+                        <div key={index} className="notification-item">
                             {/* Display notification content */}
-                            {notification.content}
+                            <p>{notification.message}</p>
+                            {/* You can display other notification properties here */}
                         </div>
                     ))
                 )}
