@@ -7,7 +7,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import CommentIcon from '@mui/icons-material/Comment';
 import io from 'socket.io-client';
 import ScrollToBottom from 'react-scroll-to-bottom';
-// const socket = io.connect("http://localhost:9000");
+
 function Partners() {
   const [partners, setPartners] = useState([]);
   const [socket, setSocket] = useState(null);
@@ -15,7 +15,7 @@ function Partners() {
   const [messages, setMessages] = useState({});
   const [messageInput, setMessageInput] = useState('');
   const [myId, setMyId] = useState('');
-  const [showCommentInput, setShowCommentInput] = useState(false);
+  const [showCommentInput, setShowCommentInput] = useState({});
   const [commentInput, setCommentInput] = useState('');
 
   useEffect(() => {
@@ -27,9 +27,7 @@ function Partners() {
             Authorization: `Bearer ${token}`
           }
         });
-        // console.log(response.data);
         setPartners(response.data.partnerData);
-        console.log(response.data.myId);
         setMyId(response.data.myId);
       } catch (error) {
         console.error('Error fetching partners:', error);
@@ -44,19 +42,13 @@ function Partners() {
       setTimeout(() => socket.connect(), 900)
     })
     socket.on('receive_message', ({ senderId, message }) => {
-      console.log("helllo");
-      alert("hi")
       const roomId = [message.receiverId, senderId].sort().join('-');
-      console.log("message", message, roomId);
       setMessages((prevMessages) => {
         const updatedMessages = { ...prevMessages };
-        // Find the entry for the specific roomId
         const roomEntry = updatedMessages[roomId];
         if (roomEntry) {
-          // Update the messages array within the roomEntry
           roomEntry.messages.push(message);
         } else {
-          // If the roomEntry doesn't exist, create a new entry
           updatedMessages[roomId] = { ...message, messages: [message] };
         }
         return updatedMessages;
@@ -68,10 +60,8 @@ function Partners() {
     };
   }, []);
 
-  // Client-side code
   const sendMessage = (receiverUserId) => {
     if (messageInput.trim() === '') {
-      console.log(messages);
       return;
     }
 
@@ -82,22 +72,16 @@ function Partners() {
       createdAt: new Date()
     };
 
-    // Constructing the room ID consistently
     const roomId = [myId, receiverUserId].sort().join('-');
 
-    console.log(roomId);
     socket.emit('send_message', { senderId: myId, receiverId: receiverUserId, message, room: roomId });
-    console.log(roomId);
 
     setMessages((prevMessages) => {
       const updatedMessages = { ...prevMessages };
-      // Find the entry for the specific roomId
       const roomEntry = updatedMessages[roomId];
       if (roomEntry) {
-        // Update the messages array within the roomEntry
         roomEntry.messages.push(message);
       } else {
-        // If the roomEntry doesn't exist, create a new entry
         updatedMessages[roomId] = { ...message, messages: [message] };
       }
       return updatedMessages;
@@ -105,18 +89,17 @@ function Partners() {
 
     setMessageInput('');
   };
+
   const MessagesContainer = useRef(null);
 
   useEffect(() => {
     if (MessagesContainer.current) {
       MessagesContainer.current.scrollTop = MessagesContainer.current.scrollHeight;
     }
-  }, [messages]); // Scroll to bottom whenever messages change
-
+  }, [messages]);
 
   const toggleChat = async (partnerId) => {
     const roomId = [myId, partnerId].sort().join('-');
-    console.log(roomId);
 
     socket.emit('join_room', roomId);
     setShowChat((prevShowChat) => ({
@@ -124,43 +107,35 @@ function Partners() {
       [partnerId]: !prevShowChat[partnerId]
     }));
     if (!showChat[partnerId]) {
-      // Fetch messages if the chat interface is opened
       const token = localStorage.getItem('user-token');
-      console.log("room", roomId);
       try {
         const response = await axios.get(`/get-messages/${roomId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log("response", response);
-
-        // Initialize an empty object to store messages by room ID
-
-
-        // Store the messageCollection
         const messageCollection = response.data.messageCollection;
-        console.log(messageCollection);
-        setMessages(messageCollection)
-
-      
-        console.log(messages);
+        console.log("toggle",messageCollection);
+        setMessages(messageCollection);
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
     }
   };
-  const handleCommentIconClick = () => {
-    setShowCommentInput(true);
+
+  const handleCommentIconClick = (partnerId) => {
+    setShowCommentInput((prevShowCommentInput) => ({
+      ...prevShowCommentInput,
+      [partnerId]: true
+    }));
   };
 
   const handleCommentSubmit = async(partnerId, commentInput) => {
-    // Handle comment submission
     console.log('Comment submitted:', commentInput);
     await submitComment(partnerId, commentInput);
-    // Reset comment input field
     setCommentInput('');
   };
+
   const submitComment = async (partnerId, commentContent) => {
     try {
       const token = localStorage.getItem('user-token');
@@ -173,7 +148,6 @@ function Partners() {
         }
       });
       console.log('Comment submitted successfully:', response.data);
-      // Optionally, update the UI to reflect the newly added comment
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
@@ -189,39 +163,33 @@ function Partners() {
             <div className='prtn'>
               <h3 className="username">{partner.partnerProfile.username}</h3>
               <p className="skills">Skill: {partner.partnerProfile.skills.join(', ')}</p>
-            </div>
             <Link to={`/update/${partner.postId}`} state={{ data: partner.postId }} className="post-title">{partner.postTitle}</Link>
+            </div>
             <div className="icons">
               <IconButton
                 aria-label="message"
-                onClick={() => {
-                  // connectToRoom();
-                  toggleChat(partner.partnerProfile.userId);
-                }}
+                onClick={() => toggleChat(partner.partnerProfile.userId)}
               >
-
                 <MessageIcon style={{ color: 'green' }} />
               </IconButton>
-              <IconButton aria-label="comment" onClick={handleCommentIconClick}>
-          <CommentIcon style={{ color: '#e68203' }} />
-        </IconButton>
-      </div>
-      {showCommentInput && (
-        <div className="comment-input-container">
-          <input
-            type="text"
-            placeholder="Type your comment"
-            value={commentInput}
-            onChange={(e) => setCommentInput(e.target.value)}
-          />
-          <button onClick={() => handleCommentSubmit(partner.partnerProfile.userId, commentInput)}>Submit</button>
-        </div>
-      )}
-           
+              <IconButton aria-label="comment" onClick={() => handleCommentIconClick(partner.partnerProfile.userId)}>
+                <CommentIcon style={{ color: '#e68203' }} />
+              </IconButton>
+            </div>
+            {showCommentInput[partner.partnerProfile.userId] && (
+              <div className="comment-input-container">
+                <textarea
+                  type="text"
+                  placeholder="Type your comment"
+                  value={commentInput}
+                  onChange={(e) => setCommentInput(e.target.value)}
+                />
+                <button onClick={() => handleCommentSubmit(partner.partnerProfile.userId, commentInput)}>Submit</button>
+              </div>
+            )}
             {showChat[partner.partnerProfile.userId] && (
               <div className="chat-interface">
                 <div className="messages-container" ref={MessagesContainer}>
-
                   <ScrollToBottom>
                     {Object.values(messages).map((room, roomIndex) => (
                       <div key={roomIndex} className="room-container" >

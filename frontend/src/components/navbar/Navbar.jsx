@@ -1,3 +1,4 @@
+// Navbar.js
 import React, { useEffect, useState } from 'react';
 import './navbar.css';
 import axios from '../../axios';
@@ -6,9 +7,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Navbar({ handleSidebarToggle }) {
     const [name, setName] = useState('');
-    const [notifications, setNotifications] = useState([]); // State to store notifications
-    const [showNotifications, setShowNotifications] = useState(false); // State for showing notifications dropdown
+    const [notifications, setNotifications] = useState([]);
+    const [showNotifications, setShowNotifications] = useState(false);
     const [senderId, setSenderId] = useState('');
+    const [showProfilePopup, setShowProfilePopup] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('user-token');
@@ -27,7 +29,6 @@ function Navbar({ handleSidebarToggle }) {
         }
     }, []);
 
-    // Function to toggle notifications dropdown
     const toggleNotifications = async () => {
         setShowNotifications(!showNotifications);
         if (!showNotifications) {
@@ -38,7 +39,6 @@ function Navbar({ handleSidebarToggle }) {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                console.log(response.data);
                 const notificationsData = response.data;
                 const updatedNotifications = notificationsData.notifications.map(notification => {
                     const showConnectButton = !notification.message.startsWith("You are now partners with");
@@ -50,16 +50,14 @@ function Navbar({ handleSidebarToggle }) {
                 console.error('Error fetching notifications:', error);
             }
         }
-
     };
+
     const handleConnect = async (notification) => {
-        console.log("hi");
         try {
             const token = localStorage.getItem('user-token');
-            // Send a message to the sender
             await axios.post('/send-message', {
-                postId:notification.postId,
-                senderUserId:notification.senderUserId,
+                postId: notification.postId,
+                senderUserId: notification.senderUserId,
                 message: 'Let\'s become partners!'
             }, {
                 headers: {
@@ -67,39 +65,51 @@ function Navbar({ handleSidebarToggle }) {
                 }
             });
 
-            // Store partner details in a new collection
             await axios.post('/add-partner', {
-                partnerId: notification.senderUserId, // ID of the notification sender
-                postId: notification.postId 
-            },{
+                partnerId: notification.senderUserId,
+                postId: notification.postId
+            }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            }
-            );
-
-            // Optionally, you can update UI or show a success message
+            });
         } catch (error) {
             console.error('Error connecting:', error);
-            // Handle error
         }
     };
 
+    const checkProfileData = async () => {
+        try {
+            const token = localStorage.getItem('user-token');
+            const response = await axios.get('/check-profile-data', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (response.data.profileExists) {
+                window.location.href = '/post-request-offer';
+            } else {
+                setShowProfilePopup(true);
+            }
+        } catch (error) {
+            console.error('Error checking profile data:', error);
+        }
+    };
 
     return (
         <div className="navigation">
-            <div className="logo navbar-toggle" onClick={() => handleSidebarToggle('profile')}>
-                <span>SKILLSYNC</span>
+            <div className="logo navbar-toggle" onClick={handleSidebarToggle}>
+                <Link to={'/home'}><span>SKILLSYNC</span></Link>
             </div>
-
             <div className="navigation-icons">
                 <Link to={'/browse-profiles'} className='br-profile'>Browse Profiles</Link>
-                <Link className='post' to={'/post-request-offer'}><button> Post a Request / Offer</button></Link>
+                <Link className='post' onClick={checkProfileData}><button>Post a Request / Offer</button></Link>
                 <a href="#" className="navigation-link">
-                    <i className="far fa-envelope"></i> {/* Message Icon */}
+                    <i className="far fa-envelope"></i>
                 </a>
                 <a href="#" className="navigation-link" onClick={toggleNotifications}>
-                    <i className="far fa-bell"></i> {/* Notification Icon */}
+                    <i className="far fa-bell"></i>
                     {showNotifications && (
                         <div className="notification-dropdown">
                             {notifications.map(notification => (
@@ -115,11 +125,20 @@ function Navbar({ handleSidebarToggle }) {
                         </div>
                     )}
                 </a>
-                <Link to={"/control-panel"} id='name-a' href="" className="navigation-link" onClick={() => handleSidebarToggle('profile')}>
+                <Link to={"/control-panel"} id='name-a' href="" className="navigation-link" onClick={handleSidebarToggle}>
                     <i className="far fa-user-circle"></i>
                     <span id='name'>{name}</span>
                 </Link>
             </div>
+            {showProfilePopup && (
+                <div className="profile-popup">
+                    <div className="popup-message">
+                        Please complete your profile before posting a request/offer
+                        <button onClick={() => window.location.href = '/control-panel'}>Edit Profile</button>
+                        <button onClick={() => setShowProfilePopup(false)}>Close</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

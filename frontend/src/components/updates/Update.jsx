@@ -17,7 +17,7 @@ function Update() {
       })
       .then(response => {
         setUpdates(response.data);
-        console.log(response.data);
+        console.log(response,"hi");
       })
       .catch(error => {
         console.error('Error fetching updates:', error);

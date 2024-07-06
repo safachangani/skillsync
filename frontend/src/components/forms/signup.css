@@ -1,32 +1,77 @@
-.container{
+/* signup.css */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff9966, #ff5e62);
+    /* height: 100vh;
     display: flex;
-    padding: 2rem 5rem;
-    margin: 4rem 6rem;
-    height: 70vh;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-    border-radius: .5rem;
-
+    justify-content: center;
+    align-items: center; */
+    margin: 0;
 }
-.form form{
+
+.container {
+    display: flex;
+    padding: 2rem;
+    margin: 2rem auto;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    border-radius: 0.5rem;
+    background-color: white;
+    max-width: 900px;
+    width: 100%;
+}
+
+.form {
     display: flex;
     flex-direction: column;
-    gap: .4rem;
-    /* align-items: flex-start; */
+    justify-content: center;
+    width: 50%;
+    padding: 2rem;
 }
-.form form input{
-    padding: .6rem;
-    width: 60.5%;
+
+.form h3 {
+    color: #9a7eff;
+    margin: 0;
+}
+
+.form span {
+    color: grey;
+    margin-bottom: 1rem;
+}
+
+.form h1 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.form p {
+    margin: 0;
+    color: #ff0000ba;
+}
+
+.form form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.form form input {
+    padding: 0.8rem;
+    width: 100%;
     border: solid 2px rgba(165, 165, 165, 0.219);
     border-radius: 5px;
+    transition: border-color 0.3s;
 }
-.form form input:hover{
-    outline: none;
-    
 
+.form form input:focus {
+    border-color: #9a7eff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(154, 126, 255, 0.5);
 }
-.form form button{
-    width: 65.5%;
-    padding: .7rem;
+
+.form form button {
+    width: 100%;
+    padding: 0.8rem;
     margin-top: 1rem;
     outline: none;
     border: none;
@@ -34,44 +79,28 @@
     border-radius: 4px;
     color: white;
     cursor: pointer;
-
-}
-.container div{
-    width: 50%;
-    height: auto;
-}
-.form p{
-    margin: 0;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
-.form h1{
-    margin-top: 0;
+.form form button:hover {
+    background-color: #8467d7;
+    transform: translateY(-2px);
 }
-.form span{
-    color: grey;
-}
-.form Link{
+
+.form a {
     text-decoration: none;
+    color: #9a7eff;
 }
-.error{
-    padding-bottom: 8px;
-    color: #ff0000ba;
-}
+
 .vector {
-    width: 300px; /* or any desired width */
-    height: 200px; /* or any desired height */
-    overflow: hidden; /* to ensure the image doesn't overflow the parent */
-    position: relative; /* optional, useful for positioning children */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    padding: 2rem;
 }
 
 .vector img {
     max-width: 100%;
-    max-height: 100%;
-    display: block; /* To remove any default spacing added by the image */
-    margin: auto; /* To center the image horizontally within the parent */
-    position: absolute; /* optional, useful for positioning if needed */
-    top: 0; /* optional, useful for positioning if needed */
-    bottom: 0; /* optional, useful for positioning if needed */
-    left: 0; /* optional, useful for positioning if needed */
-    right: 0; /* optional, useful for positioning if needed */
+    border-radius: 0.5rem;
 }

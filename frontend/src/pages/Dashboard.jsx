@@ -13,15 +13,16 @@ const Dashboard = () => {
     };
 
     const handlePageChange = (page) => {
-        // Define your logic for handling page changes here
+        setSelectedPage(page);
     };
+
 
     return (
         <div className="dashboard">
             <Sidebar expanded={sidebarExpanded} handlePageChange={handlePageChange} />
             <div className={`content ${sidebarExpanded ? 'sidebar-expanded' : ''}`}>
                 <Navbar handleSidebarToggle={handleSidebarToggle} />
-                <ControlPanel handleSidebarToggle={handleSidebarToggle}/>
+                <ControlPanel selectedPage={selectedPage} />
             </div>
         </div>
     );

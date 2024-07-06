@@ -33,11 +33,6 @@ function Sidebar({ handlePageChange }) {
                             <EventIcon className="custom-icon" /><span> Partners</span>
                         </Link>
                     </li>
-                    <li className={`restaurant-element ${activePage === 'Achievements' ? 'active' : ''}`}>
-                        <Link tabIndex="0" onClick={() => changePage('Achievements')}>
-                            <SchoolIcon className="custom-icon" /> <span> Achievements</span>
-                        </Link>
-                    </li>
                     <li className={`restaurant-element ${activePage === 'Schedule' ? 'active' : ''}`}>
                         <Link tabIndex="0" onClick={() => changePage('Schedule')}>
                             <ScheduleIcon className="custom-icon" /> <span> Schedule</span>

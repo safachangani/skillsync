@@ -128,7 +128,7 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
     try {
         // Find all documents in the collection
         const postRequestOffers = await PostRequestOffer.find({}).exec();
-        console.log(postRequestOffers);
+        console.log(postRequestOffers,"postreq");
         const updatedPostRequestOffers = [];
         for (let i = 0; i < postRequestOffers.length; i++) {
             const postRequestOffer = postRequestOffers[i];
@@ -244,6 +244,7 @@ router.post('/send-notification', authenticateToken, async (req, res) => {
 // Route to get notifications for a specific user
 router.get('/get-notifications', authenticateToken, async (req, res) => {
 
+    
     try {
         const userId = req.user._id;
         const notifications = await Notification.find({ recipientUserId: userId }).sort({ createdAt: -1 }).limit(10);
@@ -419,7 +420,8 @@ router.get('/get-messages/:roomId', async (req, res) => {
         // Find messages where the receiverId is the partnerId
         const messageCollection = await Message.find({ roomId: roomId });
 
-        // Send the messages as a response
+       
+     // Send the messages as a response
         res.json({ messageCollection });
     } catch (error) {
         // Handle errors
@@ -516,6 +518,25 @@ router.get("/get-announcement",authenticateToken,async(req,res)=>{
         res.status(500).json({ message: 'Server error' });
       }
 })
+
+router.get("/check-profile-data", authenticateToken, async (req, res) => {
+    try {
+        // Fetch profile data from the database based on the user ID in the token
+        const profile = await UserProfile.findOne({ userId: req.user._id });
+
+        // Check if profile exists
+        if (!profile) {
+            return res.status(200).json({ profileExists: false });
+        }
+
+        // Respond with the profile data
+        res.status(200).json({ profileExists: true });
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 module.exports = router;
 

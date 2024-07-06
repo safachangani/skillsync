@@ -67,3 +67,62 @@
     font-size: larger;
     font-weight: 700;
   }
+  .profile-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 80%;
+    max-width: 400px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.popup-message {
+    padding: 4rem;
+    text-align: center;
+    color: #333;
+}
+
+.popup-message button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.popup-message button:first-of-type {
+    background-color: #6647ff;
+    color: #fff;
+}
+
+.popup-message button:first-of-type:hover {
+    background-color: #846bff;
+}
+
+.popup-message button:last-of-type {
+    background-color: #ccc;
+    color: #333;
+}
+
+.popup-message button:last-of-type:hover {
+    background-color: #bbb;
+}

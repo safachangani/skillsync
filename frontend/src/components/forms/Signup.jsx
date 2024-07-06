@@ -38,22 +38,21 @@ function Signup() {
         <h1>Create an account</h1>
         {errorMessage && <p className="error">{errorMessage}</p>}
         <form action="" onSubmit={handleSubmit(userSignup)}>
-          <input type="text" name="Name" id="" placeholder='Enter your name' {...register('Name')} />
+          <input type="text" name="Name" placeholder='Enter your name' {...register('Name')} />
           <p>{errors.Name?.message}</p>
-          <input type="email" name="Email" id="" placeholder='Enter your email' {...register('Email')} />
+          <input type="email" name="Email" placeholder='Enter your email' {...register('Email')} />
           <p>{errors.Email?.message}</p>
-          <input type="password" name="Password" id="" placeholder='Enter password' {...register('Password')} />
+          <input type="password" name="Password" placeholder='Enter password' {...register('Password')} />
           <p>{errors.Password?.message}</p>
           <button type="submit">Sign Up</button>
           <p>Already have an account? <Link to={'/login'}>Login</Link></p>
         </form>
       </div>
       <div className="vector">
-        <img src="https://img.freepik.com/free-vector/script-writing-software-engineering-coding-workshop-code-created-workshop-online-programming-course-apps-games-development-class-concept-pinkish-coral-bluevector-isolated-illustration_335657-1253.jpg" alt="" />
+        <img src="https://img.freepik.com/free-vector/script-writing-software-engineering-coding-workshop-code-created-workshop-online-programming-course-apps-games-development-class-concept-pinkish-coral-bluevector-isolated-illustration_335657-1253.jpg" alt="Signup Illustration" />
       </div>
     </div>
   );
 }
 
 export default Signup;
-

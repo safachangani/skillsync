@@ -1,88 +1,37 @@
-@import url('//fonts.cdnfonts.com/css/billabong');
+/* navbar.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
 body {
+    font-family: 'Inter', sans-serif;
     background: #fafafa;
     margin: 0;
     padding: 0;
 }
-
-/* main {
-    font-family: system-ui, sans-serif;
-    height: 300vh;
-    margin-block-start: 10rem;
-    text-align: center;
-} */
-
+a{
+    text-decoration: none;
+    
+}
 .navigation {
     color: #503581;
-    background-color: #fbfbfba4;
+    background-color: #ffffff;
     height: 60px;
     width: 100%;
     top: 0;
     left: 0;
-    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
-    /* border-bottom: 1px solid rgba(0, 0, 0, 0.0975); */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 20px;
+    padding: 0 20px;
     box-sizing: border-box;
     z-index: 2;
-    /* animation magic */
     transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
 }
 
-.shrink {
-    height: 50px;
-}
-
-.navigation .logo a {
-    position: relative;
-    color: #000000;
-    font-size: 30px;
-    font-family: "billabong", sans-serif;
-    text-decoration: none;
-}
-
-.navigation-search-container {
-    position: relative;
-}
-
-.navigation-search-container input {
-    background-color: #fafafa;
-    padding: 3px 20px;
-    padding-left: 25px;
-    height: 30px;
-    box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.0975);
-    border-radius: 3px;
-    font-size: 14px;
-}
-
-.navigation-search-container .fa-search {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 11px;
-    color: rgba(0, 0, 0, 0.5);
-}
-
-@media only screen and (min-width: 320px) and (max-width: 650px) {
-    /* Navigation */
-    .navigation {
-        padding: 0 20px;
-        justify-content: space-between;
-    }
-
-    .navigation-search-container {
-        display: none;
-    }
-
-    .navigation-icons {
-        display: flex;
-    }
+.navigation .logo span {
+    color: #503581;
+    font-size: 1.8rem;
+    font-weight: 800;
 }
 
 .navigation-icons {
@@ -90,93 +39,119 @@ body {
     align-items: center;
 }
 
-.navigation-search-container input:focus {
-    outline: none;
-}
-
-.navigation-search-container input::placeholder {
-    text-align: center;
-}
-
 .navigation-icons a {
     text-decoration: none;
-}
-
-.navigation-link i {
-    display: flex;
     margin-left: 30px;
-    color: black;
-    text-decoration: none;
-    font-size: 22px;
-}
-
-.notification-bubble-wrapper {
+    color: #503581;
+    font-size: 1.1rem;
     position: relative;
-    top: -30px;
-    left: 17px;
 }
 
-.notification-bubble {
-    position: absolute;
-    min-width: 20px;
-    min-height: 20px;
-    border-radius: 50%;
-    background: #ff2c74;
-    color: #fff;
-    text-align: center;
-    font-size: 13px;
-    padding: 5px 5px 3px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    font-weight: 500;
-    display: none;
+.navigation-icons a:hover {
+    color: #7d5bae;
 }
 
-.notification-bubble {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-}
-.navbar-toggle span{
-    font-weight: 900;
-    font-size: 1.8rem;
-   
-}
 .navigation-icons .post button {
-padding: .5rem;
-cursor: pointer;
-background-color: violet;
-border: none;
-color: white;
-letter-spacing: .06rem;
-font-weight: 700;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background: #f8558b;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    font-weight: 700;
+    transition: background-color 0.3s;
 }
-#name{
-   font-weight: 800;
-   text-transform: capitalize;
-   font-size: 20px;
 
+.navigation-icons .post button:hover {
+    background-color: #7d5bae;
 }
-#name-a{
+
+#name {
+    font-weight: 800;
+    text-transform: capitalize;
+    font-size: 1rem;
+}
+
+#name-a {
     display: flex;
-    gap: .5rem;
+    align-items: center;
+    gap: 0.5rem;
+    color: #503581;
 }
-.notification-dropdown{
+
+.notification-dropdown {
+    /* position: absolute;
+    right: 0;
+    top: 60px;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
+    border-radius: 4px;
+    width: 300px;
+    z-index: 1; */
+    position: absolute;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    right: 0;
+    top: 3rem;
+    background: white;
+    width: 344px;
+    gap: 1rem;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    transition: transform 0.15s ease;
 }
-.notification-dropdown .notification-item{
+.notification-dropdown :hover{
+    transform: translateY(-3px);
+    
+
+}
+.notification-dropdown .notification-item {
     display: flex;
-    gap: .5rem;
-    align-items: center;
+    align-items: flex-end;
+    gap: 0.5rem;
+    /* padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f1f1; */
 }
-.notification-dropdown .notification-item button{
-    padding: .4rem;
+.notification-message {
+    font-size: small;
+    margin-bottom: 0;
+    background-color: #d9beff69;
 }
-.br-profile{
-    padding-right: 1rem;
-    font-weight: 600;
-    font-size: large;
+.notification-dropdown .notification-item:last-child {
+    border-bottom: none;
 }
+
+.notification-dropdown .notification-item button {
+    padding: 0.3rem 0.5rem;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-color: #8962d2;
+    transition: background-color 0.3s;
+}
+
+.notification-dropdown .notification-item button:active {
+    background-color: #503581;
+    
+
+}
+
+
+
+@media only screen and (max-width: 650px) {
+    .navigation {
+        justify-content: space-between;
+    }
+
+    .navigation-icons {
+        display: none;
+    }
+
+    .navigation-search-container {
+        display: none;
+    }
+}
+
