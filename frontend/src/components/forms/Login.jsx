@@ -44,7 +44,7 @@ function UserLogin() {
           <button type="submit">Login</button>
           {/* </Link> */}
           <p>Don't have an account? 
-          <Link to={'/signup'}>Signup</Link>
+          <Link to={'/'}>Signup</Link>
           </p>
         </form>
         {errorMessage && <p>{errorMessage}</p>}
