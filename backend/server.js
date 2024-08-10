@@ -12,7 +12,7 @@ const skillSyncRouter = require('./routes/skillsync');
 
 // Configure CORS options
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: ['https://skillsync-wefd.onrender.com', 'http://localhost:3001'],
     credentials: true,
     optionSuccessStatus: 200
 };
