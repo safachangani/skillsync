@@ -40,7 +40,7 @@ function BrowseProfiles() {
 
   const renderProfile = (profile) => (
     <div className="profile-card" key={profile._id}>
-      <img src={`http://localhost:9000/skillsync/uploads/${profile.filename}`} alt={profile.username} />
+      <img src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${profile.filename}`} alt={profile.username} />
       <div className="profile-details">
         <h2>{profile.username}</h2>
         <p>{profile.about}</p>

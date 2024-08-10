@@ -159,7 +159,7 @@ function Partners() {
       <div className="partners-grid">
         {partners.map((partner) => (
           <div className="partner-card" key={partner._id}>
-            <img className="avatar" alt={partner.partnerProfile.username} src={`http://localhost:9000/skillsync/uploads/${partner.partnerProfile.filename}`} />
+            <img className="avatar" alt={partner.partnerProfile.username} src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${partner.partnerProfile.filename}`} />
             <div className='prtn'>
               <h3 className="username">{partner.partnerProfile.username}</h3>
               <p className="skills">Skill: {partner.partnerProfile.skills.join(', ')}</p>
