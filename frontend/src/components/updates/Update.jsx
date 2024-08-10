@@ -31,7 +31,7 @@ function Update() {
         <div className='update-card' key={index}>
           <span className='tab'>{update.tab}</span>
           <div className='user-info'>
-          <img src={`http://localhost:9000/skillsync/uploads/${update.filename}`} className="avatar-u" alt="avatar" />
+          <img src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${update.filename}`} className="avatar-u" alt="avatar" />
             <span className='user-name'>{update.username}</span>
           </div>
           <h2 className='heading'>{update.heading}</h2>
