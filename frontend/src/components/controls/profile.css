@@ -4,25 +4,26 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: white;
+  /* background-color: white; */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #a67ded;
 }
 
 .edit-profile-link {
   display: inline-block;
   margin-bottom: 20px;
-  color: #6202a1;
+  color: #9a7eff;
   font-weight: bold;
   text-decoration: none;
-  border: 1px solid #6202a1;
+  border: 1px solid #9a7eff;
   padding: 10px 20px;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .edit-profile-link:hover {
-  background-color: #6202a1;
+  background-color: #9a7eff;
   color: white;
 }
 
@@ -30,7 +31,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  background-color: #f8f9fa;
+  /* background-color: #f8f9fa; */
   padding: 20px;
   border-radius: 10px;
   flex-direction: column;
@@ -47,17 +48,18 @@
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 3px solid white;
 }
 
 .profile-info {
   flex-grow: 1;
 }
 
-.username {
+.profile-info .username {
   font-size: 24px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .about {
@@ -71,8 +73,8 @@
 }
 
 .skills h3, .education h3, .social-links h3 {
-  font-size: 18px;
-  color: #6202a1;
+  font-size: 17px;
+  /* color: #6202a1; */
   margin-bottom: 10px;
 }
 
@@ -82,19 +84,30 @@
 }
 
 .skills ul li, .social-links ul li {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 5px;
+    font-size: 16px;
+    /* color: #555; */
+    margin-bottom: 5px;
+  }
+  .skills ul li{
+  color: white;
+  background-color: #7523ef;
+  border-radius: 1rem;
+  padding: .5rem 1rem;
+  font-weight: 600;
+  
 }
+/* .social-links ul{
+  text-align: start;
 
+} */
 .social-links ul li a {
-  color: #6202a1;
+  color: #513ba1;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .social-links ul li a:hover {
-  color: #333;
+  color: #6a58c2;
 }
 
 #skills-list{

@@ -11,10 +11,13 @@ function Navbar({ handleSidebarToggle }) {
     const [showNotifications, setShowNotifications] = useState(false);
     const [senderId, setSenderId] = useState('');
     const [showProfilePopup, setShowProfilePopup] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('user-token');
         if (token) {
+            setIsLoggedIn(true);
             axios.get('/get-email', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -97,6 +100,13 @@ function Navbar({ handleSidebarToggle }) {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('user-token');
+        setIsLoggedIn(false);
+        setName('');
+        window.location.href = '/login';
+    };
+
     return (
         <div className="navigation">
             <div className="logo navbar-toggle" onClick={handleSidebarToggle}>
@@ -125,10 +135,21 @@ function Navbar({ handleSidebarToggle }) {
                         </div>
                     )}
                 </a>
-                <Link to={"/control-panel"} id='name-a' href="" className="navigation-link" onClick={handleSidebarToggle}>
-                    <i className="far fa-user-circle"></i>
-                    <span id='name'>{name}</span>
-                </Link>
+                <div className="profile-dropdown-container">
+                    <div className="navigation-link profile-icon" onClick={() => setShowProfileDropdown(!showProfileDropdown)}>
+                        <i className="far fa-user-circle"></i>
+                        <span id='name'>{name}</span>
+                    </div>
+                    {showProfileDropdown && (
+                        <div className="profile-dropdown">
+                            {isLoggedIn ? (
+                                <div onClick={handleLogout}>Logout</div>
+                            ) : (
+                                <Link to="/login">Login</Link>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
             {showProfilePopup && (
                 <div className="profile-popup">

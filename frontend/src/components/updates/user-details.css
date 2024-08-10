@@ -50,4 +50,20 @@
 .view-details-link:hover {
   background-color: #8e5ffb;
   border: none;
+
+}
+.view-details-link:active{
+  background-color: #cebbf1;
+  animation: clickEffect 0.2s ease;
+}
+@keyframes clickEffect {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(0.95);
+  }
+  100% {
+      transform: scale(1);
+  }
 }

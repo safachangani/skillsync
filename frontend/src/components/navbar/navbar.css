@@ -139,7 +139,28 @@ a{
 
 }
 
+.profile-dropdown-container{
+    margin-left: 30px;
+    position: relative;
+    cursor: pointer;
+}
+.profile-icon{
+    display: flex;
+    gap: .3rem;
+    align-items: center;
+}
+.profile-dropdown{
+    position: absolute;
+    padding: 1rem;
+    /* width: 80%; */
+    text-align: center;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    top: 46px;
+    cursor: pointer;
+    right: 0;
 
+}
 
 @media only screen and (max-width: 650px) {
     .navigation {
