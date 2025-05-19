@@ -114,6 +114,7 @@ function Navbar({ handleSidebarToggle }) {
             </div>
             <div className="navigation-icons">
                  <Link to={'/control-panel'} className='br-profile'>Dashboard</Link>
+                 <Link to={'/my-partners'} className='br-profile'>Messages</Link>
                 <Link to={'/browse-profiles'} className='br-profile'>Browse Profiles</Link>
                 <Link className='post' onClick={checkProfileData}><button>Post a Request / Offer</button></Link>
                 <a href="#" className="navigation-link">

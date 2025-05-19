@@ -12,6 +12,8 @@ import EditProfile from './components/forms/EditProfile';
 import Profile from './components/controls/Profile';
 import BrowseProfiles from './components/updates/BrowseProfiles';
 import ClassAllocation from './components/forms/ClassAllocation';
+import Messages from './components/controls/Messages';
+
 function App() {
   return (
     <Router>
@@ -26,7 +28,7 @@ function App() {
         <Route path= '/profile' element={<Profile/>}/>
         <Route path= '/browse-profiles' element={<BrowseProfiles/>}/>
         <Route path= '/form-announcement' element={<ClassAllocation/>}/>
-
+        <Route path='/my-partners' element={<Messages/>}/>
 
 
       </Routes>

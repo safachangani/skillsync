@@ -37,9 +37,9 @@ function Profile() {
             <Link to='/edit-profile' className='edit-profile-link'>Edit Profile</Link>
             {profile && (
                 <div className='profile-showcase'>
-                    <div className='avatar-container'>
+                    <div className='avatar-container'>                        
                         <img 
-                            src={profile.filename ? `https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${profile.filename}` : defaultImage} 
+                            src={profile.filename ? `http://localhost:9000/skillsync/uploads/${profile.filename}` : defaultImage} 
                             className='avatar' 
                             alt='avatar' 
                             onError={handleImageError} // Handle image loading errors

@@ -15,6 +15,8 @@ function Signup() {
   const navigate = useNavigate();
 
   function userSignup(data) {
+    console.log(data);
+    
     axios.post('/user-signup', data)
       .then((response) => {
         console.log(response);

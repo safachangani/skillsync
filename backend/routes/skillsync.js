@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const multer = require('multer');
-const { Signup, PostRequestOffer, UserProfile, Notification, Partner, Message, Comment,Announcement } = require('../controller/controller');
+const { Signup, PostRequestOffer, UserProfile, Notification, Partner, Message, Comment, Announcement } = require('../controller/controller');
 const saltRounds = 10;
 
 
@@ -128,19 +128,19 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
     try {
         // Find all documents in the collection
         const postRequestOffers = await PostRequestOffer.find({}).exec();
-        console.log(postRequestOffers,"postreq");
+        console.log(postRequestOffers, "postreq");
         const updatedPostRequestOffers = [];
         for (let i = 0; i < postRequestOffers.length; i++) {
             const postRequestOffer = postRequestOffers[i];
             const userId = postRequestOffer._doc.userId;
-        
+
             // Fetch userProfile for the current userId
             const userProfile = await UserProfile.findOne({ userId }).exec();
-            
+
             if (userProfile) {
                 const filename = userProfile.filename;
                 const username = userProfile.username;
-        
+
                 // Create a new object with the required fields
                 const updatedOffer = {
                     _id: postRequestOffer._id,
@@ -153,8 +153,8 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
                 };
                 updatedPostRequestOffers.push(updatedOffer);
             }
-        }      
-        console.log(updatedPostRequestOffers,"post");
+        }
+        console.log(updatedPostRequestOffers, "post");
         res.status(200).json(updatedPostRequestOffers);
     } catch (error) {
         console.error('Error retrieving post request offers:', error);
@@ -162,14 +162,14 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
     }
 });
 
-router.get("/get-update/:postId",authenticateToken,async(req,res)=>{
-    try{
+router.get("/get-update/:postId", authenticateToken, async (req, res) => {
+    try {
         const postId = req.params.postId;
-        console.log("hi",postId);
-        const postReqOff = await PostRequestOffer.findOne({_id:postId });
+        console.log("hi", postId);
+        const postReqOff = await PostRequestOffer.findOne({ _id: postId });
         console.log(postReqOff);
         res.status(201).json({ postReqOff });
-    } catch(err){
+    } catch (err) {
         console.log(err);
     }
 })
@@ -244,7 +244,7 @@ router.post('/send-notification', authenticateToken, async (req, res) => {
 // Route to get notifications for a specific user
 router.get('/get-notifications', authenticateToken, async (req, res) => {
 
-    
+
     try {
         const userId = req.user._id;
         const notifications = await Notification.find({ recipientUserId: userId }).sort({ createdAt: -1 }).limit(10);
@@ -420,8 +420,8 @@ router.get('/get-messages/:roomId', async (req, res) => {
         // Find messages where the receiverId is the partnerId
         const messageCollection = await Message.find({ roomId: roomId });
 
-       
-     // Send the messages as a response
+
+        // Send the messages as a response
         res.json({ messageCollection });
     } catch (error) {
         // Handle errors
@@ -430,6 +430,28 @@ router.get('/get-messages/:roomId', async (req, res) => {
     }
 });
 
+router.get('/get-message-history/:partnerId', authenticateToken, async (req, res) => {
+    // console.log("hohh",req.user,req.params);
+    const userId = req.user._id;
+    const partnerId = req.params.partnerId;
+    console.log("does nodemon working");
+
+    try {
+        const messages = await Message.find({
+            $or: [
+                { senderId: userId, receiverId: partnerId },
+                { senderId: partnerId, receiverId: userId }
+            ]
+        }).sort({ createdAt: 1 }); // oldest to newest
+        res.status(200).json(messages)
+        console.log("successfully got the messages");
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err: "Error fetching Message" });
+    }
+
+})
 // Assuming you have an Express router set up
 router.post('/submit-comment', authenticateToken, async (req, res) => {
     try {
@@ -490,15 +512,15 @@ router.get('/get-all-profiles', authenticateToken, async (req, res) => {
     }
 });
 
-router.post("/announcement", authenticateToken,async (req, res) => {
+router.post("/announcement", authenticateToken, async (req, res) => {
     console.log(req.body)
     try {
 
         const announcement = new Announcement({
             topic: req.body.topic,
             location: req.body.location,
-            date:req.body.date,
-            time:req.body.time,
+            date: req.body.date,
+            time: req.body.time,
             createdBy: req.user._id
         });
         await announcement.save();
@@ -508,15 +530,15 @@ router.post("/announcement", authenticateToken,async (req, res) => {
         res.status(401).json({ message: 'Unauthorized' });
     }
 })
-router.get("/get-announcement",authenticateToken,async(req,res)=>{
+router.get("/get-announcement", authenticateToken, async (req, res) => {
     try {
         // Fetch all announcements from the database
         const announcements = await Announcement.find();
         res.json(announcements);
-      } catch (error) {
+    } catch (error) {
         console.error('Error fetching announcements:', error);
         res.status(500).json({ message: 'Server error' });
-      }
+    }
 })
 
 router.get("/check-profile-data", authenticateToken, async (req, res) => {
@@ -537,6 +559,13 @@ router.get("/check-profile-data", authenticateToken, async (req, res) => {
     }
 });
 
+router.post('/upload', upload.single('file'), (req, res) => {
+    console.log("filee",req.file);    
+    const fileUrl = `http://localhost:9000/skillsync/uploads/${req.file.filename}`;
+    console.log(fileUrl,"fileUrl");
+    
+    res.json({ fileUrl });
+  });
 
 module.exports = router;
 

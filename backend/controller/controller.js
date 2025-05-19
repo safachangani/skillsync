@@ -59,42 +59,52 @@ const partnersSchema = new mongoose.Schema({
 
 const Partner = mongoose.model('Partner', partnersSchema);
 
+// const messageSchema = new mongoose.Schema({
+//   roomId: {
+//       type: String,
+//       required: true
+//   },
+//   senderId: {
+//       type: String,
+//       required: true
+//   },
+//   receiverId: {
+//       type: String,
+//       required: true
+//   },
+//   messages: [
+//       {
+//           content: {
+//               type: String,
+//               required: true
+//           },
+//           senderId: {
+//               type: String,
+//               required: true
+//           },
+//           receiverId: {
+//               type: String,
+//               required: true
+//           },
+//           createdAt: {
+//               type: Date,
+//               default: Date.now
+//           }
+//       }
+//   ]
+// });
+
+// // Create the Message model using the schema
+// const Message = mongoose.model('Message', messageSchema);
 const messageSchema = new mongoose.Schema({
-  roomId: {
-      type: String,
-      required: true
-  },
-  senderId: {
-      type: String,
-      required: true
-  },
-  receiverId: {
-      type: String,
-      required: true
-  },
-  messages: [
-      {
-          content: {
-              type: String,
-              required: true
-          },
-          senderId: {
-              type: String,
-              required: true
-          },
-          receiverId: {
-              type: String,
-              required: true
-          },
-          createdAt: {
-              type: Date,
-              default: Date.now
-          }
-      }
-  ]
+  senderId: { type: String, required: true },
+  receiverId: { type: String, required: true },
+  content: String,
+  fileUrl: String, // for file/image
+  fileType: String,
+  createdAt: { type: Date, default: Date.now }
 });
 
-// Create the Message model using the schema
 const Message = mongoose.model('Message', messageSchema);
 
 const commentSchema = new mongoose.Schema({
@@ -112,6 +122,8 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  fileUrl: String, // for file/image
+  fileType: String, // "image", "file", etc.
   createdAt: {
     type: Date,
     default: Date.now

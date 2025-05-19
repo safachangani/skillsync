@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://skillsync-backend-xiwx.onrender.com/skillsync', // Replace with your API endpoint
+  baseURL: 'http://localhost:9000/skillsync',
+  //https://skillsync-backend-xiwx.onrender.com/skillsync
   withCredentials: true, // Send cookies with requests
   headers: {
     'Content-Type': 'application/json',

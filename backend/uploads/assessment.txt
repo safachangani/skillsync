@@ -1,0 +1,2 @@
+1.The popup renders frequently, and even after closing it, it reappears almost immediately, within the next second.
+This constant interruptionmakes it very difficult to properly view and interact with the site, causing a major disturbance.
