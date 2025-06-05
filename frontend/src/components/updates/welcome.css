@@ -1,0 +1,147 @@
+/* Root colors & fonts */
+:root {
+  --clr-primary: #4f46e5;
+  --clr-accent: #a5b4fc;
+  --clr-dark: #111827;
+  --clr-light: #f9fafb;
+  --ff-sans: 'Inter', sans-serif;
+}
+
+.hero-section {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #4f46e5 0%, #a5b4fc 100%);
+  color: white;
+  overflow: hidden;
+  font-family: var(--ff-sans);
+}
+
+.hero-overlay {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60%;
+  height: 200%;
+  background: rgba(255,255,255,0.1);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-title span {
+  background: rgba(255,255,255,0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+}
+
+.hero-subtitle {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-outline,
+.btn-filled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-outline {
+  color: white;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.btn-filled {
+  background: #FAFAFA;
+  color: var(--clr-dark);
+}
+
+.btn-filled:hover {
+  background: #f3f4f6;
+}
+
+.btn-filled:active,
+.btn-outline:active {
+  transform: scale(0.96);
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
+/* Illustration area */
+.hero-graphic {
+  position: relative;
+  z-index: 1;
+  text-align: right;
+}
+
+.hero-graphic img {
+  max-width: 100%;
+  height: auto;
+  transform: translateX(10%);
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Subtle float animation */
+@keyframes float {
+  0%, 100% { transform: translateX(10%) translateY(0); }
+  50%     { transform: translateX(10%) translateY(-10px); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  .hero-graphic {
+    display: none;
+  }.hero-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-subtitle{
+    font-size: .8rem;
+  }
+}

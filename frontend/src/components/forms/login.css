@@ -1,0 +1,285 @@
+/* ────────── 1) GLOBAL + CONTAINER ───────────────────────────────── */
+
+
+/* Top-level flex container */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Make panels flex: 1 each; they split 50/50 */
+.left-panel,
+.right-panel {
+  flex: 1;
+}
+
+/* ────────── 2) LEFT PANEL (FORM) ────────────────────────────────── */
+
+.left-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:rgb(255, 255, 255);
+}
+
+.login-card {
+  background-color: #ffffff;
+  width: 80%;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.login-logo {
+  width: 31%;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #222222;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 1.75rem;
+}
+
+/* ────────── FORM GROUP ───────────────────────────────────────────── */
+
+.form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  color: #444444;
+  margin-bottom: 0.35rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #a97efd;
+  box-shadow: 0 0 0 3px rgba(169, 126, 253, 0.2);
+}
+
+.input-error {
+  border-color: #e74c3c !important;
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: #e74c3c;
+  margin-top: 0.4rem;
+}
+
+/* ────────── LINKS ROW ───────────────────────────────────────────── */
+
+.links-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.link-secondary {
+  font-size: 0.85rem;
+  color: #666666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link-secondary:hover {
+  color: #a97efd;
+}
+
+/* ────────── BUTTONS ──────────────────────────────────────────────── */
+
+.btn {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(169, 126, 253, 0.4);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4b3dff, #a97efd);
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #6a51ff, #caaaed);
+  transform: translateY(-1px);
+}
+
+/* ────────── ALTERNATIVE LOGIN (GOOGLE) ──────────────────────────── */
+
+.alt-login {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.divider-text {
+  font-size: 0.85rem;
+  color: #888888;
+  position: relative;
+  display: inline-block;
+  padding: 0 0.75rem;
+  background: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 120px;
+  height: 1px;
+  background-color: #dddddd;
+}
+
+.divider-text::before {
+  left: -130px;
+}
+
+.divider-text::after {
+  right: -130px;
+}
+
+.google-button {
+  display: flex;
+  justify-content: center;
+}
+
+/* If you want to restyle the Google button itself, target its wrapper: */
+/* .google-button button { border-radius: 8px !important; } */
+
+/* ────────── SIGNUP TEXT ──────────────────────────────────────────── */
+
+.signup-text {
+  font-size: 0.9rem;
+  color: #555555;
+  margin-bottom: 0.75rem;
+}
+
+.error-text {
+  font-size: 0.9rem;
+  color: #e74c3c;
+}
+
+/* ────────── 3) RIGHT PANEL (HERO / FEATURES) ────────────────────── */
+
+.right-panel {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4b3dff, #2b00b8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.right-panel .hero-content {
+  text-align: center;
+  max-width: 320px;
+  z-index: 1;
+}
+
+.right-panel .hero-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+}
+
+.features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.features-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  stroke-width: 1.5;
+}
+
+.features-list span {
+  font-size: 1rem;
+  color: #f0f0f0;
+}
+
+.hero-cta {
+  font-size: 1rem;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+/* Optionally, you can add a decorative diagonal shape */
+/* .right-panel::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -30%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.05);
+  transform: rotate(45deg);
+} */
+
+/* ────────── 4) RESPONSIVE ADJUSTMENTS ───────────────────────────── */
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    flex: none;
+    width: 100%;
+  }
+
+  .right-panel {
+    padding: 3rem 1rem;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}

@@ -1,106 +1,239 @@
-/* signup.css */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ff9966, #ff5e62);
-    /* height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center; */
-    margin: 0;
+
+.signup-container {
+  display: flex;
+  min-height: 100vh;
 }
 
-.container {
-    display: flex;
-    padding: 2rem;
-    margin: 2rem auto;
-    height: auto;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-    border-radius: 0.5rem;
-    background-color: white;
-    max-width: 900px;
-    width: 100%;
+.signup-left-panel,
+.signup-right-panel {
+  flex: 1;
 }
 
-.form {
-    display: flex;
+/* ────────── 3) LEFT PANEL (SIGNUP FORM) ──────────────────────────── */
+
+.signup-left-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: #f5f5f5; */
+  /* background-color: #ffffff; */
+}
+
+.signup-card {
+  width: 80%;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+/* Logo */
+.signup-logo {
+  width: 34%;
+  margin-bottom: 1rem;
+}
+
+/* Title & Subtitle */
+.signup-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #222222;
+  margin-bottom: 0.25rem;
+}
+
+.signup-subtitle {
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 1.75rem;
+}
+
+/* Error Message (Form-level) */
+.signup-error-text {
+  font-size: 0.9rem;
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+/* ────────── 4) FORM & INPUTS ────────────────────────────────────── */
+
+.signup-form {
+  text-align: left;
+}
+
+.signup-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.signup-form-group label {
+  display: block;
+  font-size: 0.875rem;
+  color: #444444;
+  margin-bottom: 0.35rem;
+}
+
+.signup-form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  background-color: #ffffff;
+  color: #222222;
+}
+
+.signup-form-group input:focus {
+  outline: none;
+  border-color: #a97efd;
+  box-shadow: 0 0 0 3px rgba(169, 126, 253, 0.2);
+}
+
+.signup-input-error {
+  border-color: #e74c3c !important;
+}
+
+.signup-field-error {
+  font-size: 0.8rem;
+  color: #e74c3c;
+  margin-top: 0.4rem;
+}
+
+/* ────────── 5) BUTTONS ───────────────────────────────────────────── */
+
+.signup-btn {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.signup-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(169, 126, 253, 0.4);
+}
+
+.signup-btn-primary {
+  background: linear-gradient(135deg, #4b3dff, #a97efd);
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.signup-btn-primary:hover {
+  background: linear-gradient(135deg, #6a51ff, #caaaed);
+  transform: translateY(-1px);
+}
+
+/* ────────── 6) REDIRECT TEXT ─────────────────────────────────────── */
+
+.signup-redirect-text {
+  font-size: 0.9rem;
+  color: #555555;
+  margin-top: 0.75rem;
+}
+
+.signup-link {
+  color: #4b3dff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.signup-link:hover {
+  color: #a97efd;
+}
+
+/* ────────── 7) RIGHT PANEL (FEATURE HERO) ───────────────────────── */
+
+.signup-right-panel {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4b3dff, #2b00b8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.signup-hero-content {
+  text-align: center;
+  max-width: 320px;
+  z-index: 1;
+}
+
+.signup-hero-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+}
+
+.signup-features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.signup-features-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.signup-feature-icon {
+  flex-shrink: 0;
+  stroke-width: 1.5;
+}
+
+.signup-features-list span {
+  font-size: 1rem;
+  color: #f0f0f0;
+}
+
+.signup-hero-cta {
+  font-size: 1rem;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+/* Optional diagonal overlay (uncomment to use) */
+/*
+.signup-right-panel::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -30%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.05);
+  transform: rotate(45deg);
+}
+*/
+
+/* ────────── 8) RESPONSIVE ADJUSTMENTS ────────────────────────────── */
+
+@media (max-width: 768px) {
+  .signup-container {
     flex-direction: column;
-    justify-content: center;
-    width: 50%;
-    padding: 2rem;
-}
+  }
 
-.form h3 {
-    color: #9a7eff;
-    margin: 0;
-}
-
-.form span {
-    color: grey;
-    margin-bottom: 1rem;
-}
-
-.form h1 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-.form p {
-    margin: 0;
-    color: #ff0000ba;
-}
-
-.form form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.form form input {
-    padding: 0.8rem;
+  .signup-left-panel,
+  .signup-right-panel {
+    flex: none;
     width: 100%;
-    border: solid 2px rgba(165, 165, 165, 0.219);
-    border-radius: 5px;
-    transition: border-color 0.3s;
-}
+  }
 
-.form form input:focus {
-    border-color: #9a7eff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(154, 126, 255, 0.5);
-}
+  .signup-right-panel {
+    padding: 3rem 1rem;
+  }
 
-.form form button {
+  .signup-card {
     width: 100%;
-    padding: 0.8rem;
-    margin-top: 1rem;
-    outline: none;
-    border: none;
-    background-color: #9a7eff;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.form form button:hover {
-    background-color: #8467d7;
-    transform: translateY(-2px);
-}
-
-.form a {
-    text-decoration: none;
-    color: #9a7eff;
-}
-
-.vector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    padding: 2rem;
-}
-
-.vector img {
-    max-width: 100%;
-    border-radius: 0.5rem;
+    max-width: 360px;
+    margin: 0 auto;
+  }
 }

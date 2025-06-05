@@ -1,118 +1,416 @@
-/* profile.css */
+/* ──────────────────────────────────────────────────────────────────────── */
+/*  Aesthetic Profile Page (Pastel Gradient + Cards)                      */
+/* ──────────────────────────────────────────────────────────────────────── */
 
-.profile-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  /* background-color: white; */
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 2px solid #a67ded;
+:root {
+  --text-dark: #1a1a1a;
+  --text-light: #666666;
+  --accent-lavender: #d9c2f7;
+  --accent-sky: #c2e3f7;
+  --accent-peach: #f7d8c2;
+  --accent-mint: #c2f7e1;
+  --card-bg: #ffffff;
+  --section-bg: #fafaff;
+  --gray-border: #e5e5e5;
+  --btn-dark: #1a1a1a;
+  --btn-hover: #333333;
 }
 
-.edit-profile-link {
-  display: inline-block;
-  margin-bottom: 20px;
-  color: #9a7eff;
-  font-weight: bold;
-  text-decoration: none;
-  border: 1px solid #9a7eff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
+/* ───────────────────────────────────────────────────────── Loading State ─ */
+.profile-loading {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
 }
 
-.edit-profile-link:hover {
-  background-color: #9a7eff;
-  color: white;
-}
-
-.profile-showcase {
+/* ───────────────────────────────────────────────────────── Navbar Spacing ─ */
+.profile-wrapper {
+  padding-top: 3rem;
   display: flex;
-  align-items: center;
-  gap: 20px;
-  /* background-color: #f8f9fa; */
-  padding: 20px;
-  border-radius: 10px;
   flex-direction: column;
+  padding: 2rem 1rem;
+  gap:.5rem
+}
+
+/* ───────────────────────────────────────────────────────── Header Section ─ */
+.profile-header {
+  background: linear-gradient(135deg,
+      var(--accent-lavender) 0%,
+      var(--accent-sky) 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* .profile-header-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  background: inherit;
+} */
+
+.profile-header-content {
+  /* position: relative; */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding-bottom: 2.5rem;
   text-align: center;
 }
 
-.avatar-container {
-  flex-shrink: 0;
-}
 
-.avatar {
+.profile-avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  border: 2px solid var(--card-bg);
   object-fit: cover;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border: 3px solid white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
 
-.profile-info {
-  flex-grow: 1;
+.profile-avatar:hover {
+  transform: scale(1.05);
 }
 
-.profile-info .username {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  /* margin-bottom: 10px; */
+/* ─── Name / Username / Location ─── */
+.profile-basic-text {
+  text-align: center;
+  color: var(--text-dark);
 }
 
-.about {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-.skills, .education, .social-links {
-  margin-bottom: 20px;
-}
-
-.skills h3, .education h3, .social-links h3 {
-  font-size: 17px;
-  /* color: #6202a1; */
-  margin-bottom: 10px;
-}
-
-.skills ul, .social-links ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.skills ul li, .social-links ul li {
-    font-size: 16px;
-    /* color: #555; */
-    margin-bottom: 5px;
-  }
-  .skills ul li{
-  color: white;
-  background-color: #7523ef;
-  border-radius: 1rem;
-  padding: .5rem 1rem;
-  font-weight: 600;
+.profile-name {
   
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color:black
 }
-/* .social-links ul{
-  text-align: start;
 
-} */
-.social-links ul li a {
-  color: #513ba1;
+.profile-basic-text .profile-username {
+  font-size: 1rem;
+  color: black;
+  margin: 4px 0;
+}
+
+.profile-location {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* ─── Edit Profile Button ─── */
+.edit-profile-button {
+  /* margin-top: 0.8rem; */
+  padding: 8px 18px;
+  background-color: var(--btn-dark);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: background 0.3s ease;
 }
 
-.social-links ul li a:hover {
-  color: #6a58c2;
+.edit-profile-button:hover {
+  background-color: var(--btn-hover);
 }
 
-#skills-list{
+/* ───────────────────────────────────────────────────────── Stats Cards ─ */
+.profile-stats-cards {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
+  margin: -10px 2rem 2rem;
+  /* Pull up to overlap header */
+}
 
+.stat-card {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem 0;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+  border: 1px solid var(--gray-border);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.3rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* ─────────────────────────────────────────────────────── Main Content Cards ─ */
+.profile-main-content {
+   display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* margin: 0 1.5rem 2rem; */
+}
+
+/* ─── General Card Styles ─── */
+.profile-card {
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--gray-border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ─── Card Header (Colored Accent + Title) ─── */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.2rem 1.5rem;
+  background-color: var(--section-bg);
+  position: relative;
+}
+
+.header-accent {
+  width: 6px;
+  height: 22px;
+  border-radius: 3px;
+}
+
+.skills-accent {
+  background-color: var(--accent-mint);
+}
+
+.about-accent {
+  background-color: var(--accent-peach);
+}
+
+.social-accent {
+  background-color: var(--accent-sky);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* ─────────────────────────────────────────────────────── Skills Card ─ */
+.skills-card .skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+.skill-tag {
+  display: flex;
+  align-items: center;
+  background-color: var(--accent-lavender);
+  color: var(--text-dark);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.skill-tag:hover {
+  background-color: var(--accent-sky);
+}
+
+.skill-level {
+  background: rgba(0, 0, 0, 0.07);
+  color: var(--text-dark);
+  font-size: 0.75rem;
+  font-weight: 400;
+  padding: 2px 6px;
+  border-radius: 12px;
+  margin-left: 6px;
+}
+
+/* No skills fallback */
+.no-skills {
+  padding: 1.2rem 1.5rem 1.5rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* ─────────────────────────────────────────────────────── About Card ─ */
+.about-card .about-text {
+  padding: 1rem 1.5rem 1.5rem;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────────── Social Links Card ─ */
+.social-card .social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+
+/* No links fallback */
+.no-links {
+  /* padding: 1.2rem 1.5rem 1.5rem; */
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* ───────────────────────────────────────────────────────── Responsive ─ */
+@media (max-width: 768px) {
+  .profile-stats-cards {
+    flex-direction: column;
+    gap: 1rem;
+    margin: -60px 1rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    border-radius: 16px;
+    margin: 0 1rem 1.5rem;
+  }
+
+  .profile-stats-cards {
+    margin: -50px 1rem 1.5rem;
+  }
+
+  .profile-main-content {
+    margin: 0 1rem 2rem;
+    gap: 1rem;
+  }
+}
+/* ──────────────────────────────────────────────────────────────────────── */
+/*  Smooth, Aesthetic Social Buttons                                        */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+/* Container */
+.social-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 1.2rem 1.5rem;
+}
+
+/* ── Base styles for all buttons ── */
+.social-button {
+ display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+ 
+}
+
+/* Icon sizing: will inherit stroke color */
+.social-button .icon {
+  width: 22px;        /* slightly larger for better visibility */
+  height: 22px;
+  stroke-width: 2;    /* Heroicons default */
+  fill: none;
+  stroke: currentColor;
+  transition: stroke 0.35s ease-in-out;
+}
+
+/* ── LinkedIn Button ── */
+.social-button.linkedin {
+  color: #ffffff;      /* white text + icon stroke */
+}
+.social-button.linkedin:hover,
+.social-button.linkedin:focus {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+.social-button.linkedin:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 120, 200, 0.5);
+}
+
+/* ── GitHub Button ── */
+.social-button.github {
+ 
+  color: #ffffff;      /* white text + icon stroke */
+}
+.social-button.github:hover,
+.social-button.github:focus {
+  transform: scale(1.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+.social-button.github:focus {
+  outline: none;
+ 
+}
+
+/* ── Website/Portfolio Button ── */
+.social-button.website {
+  color: #111111;      /* dark text + icon stroke */
+}
+.social-button.website:hover,
+.social-button.website:focus {
+  
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+.social-button.website:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(100, 120, 240, 0.5);
+}
+
+/* ── Underline flourish on text ── */
+.social-button span {
+  position: relative;
+}
+.social-button span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;                   /* slightly farther down */
+  width: 0%;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.35s ease-in-out;
+}
+.social-button:hover span::after,
+.social-button:focus span::after {
+  width: 100%;
+}
+
+/* ── Disabled / No Links Fallback ── */
+.no-links {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  margin: 0.5rem 0;
 }

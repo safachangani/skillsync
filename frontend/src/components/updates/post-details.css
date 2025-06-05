@@ -1,0 +1,308 @@
+/* ============================================================
+   Post Details Page: Elegant, Aesthetic Card Design
+   ============================================================ */
+
+:root {
+  --primary-bg: #ffffff;
+  --secondary-bg: #f7f8fa;
+  --accent-blue: #4f46e5;
+  --accent-green: #10b981;
+  --accent-peach: #f97316;
+  --text-dark: #1f2937;
+  --text-medium: #4b5563;
+  --text-light: #6b7280;
+  --banner-gradient-start: #4f46e5;
+  --banner-gradient-end: #10b981;
+}
+
+/* ────────────────────────────────────────────────────────
+   Container & Layout
+   ──────────────────────────────────────────────────────── */
+.post-details-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: var(--primary-bg);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+/* ────────────────────────────────────────────────────────
+   Top Banner with Gradient + User Badge
+   ──────────────────────────────────────────────────────── */
+.banner {
+  position: relative;
+  height: 160px;
+  background: linear-gradient(
+    135deg,
+    var(--banner-gradient-start) 0%,
+    var(--banner-gradient-end) 100%
+  );
+}
+
+.banner-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  background: linear-gradient(
+    135deg,
+    var(--banner-gradient-start),
+    var(--banner-gradient-end)
+  );
+}
+
+.user-badge {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border: 4px solid var(--primary-bg);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--primary-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ────────────────────────────────────────────────────────
+   Content Wrapper (push down for badge)
+   ──────────────────────────────────────────────────────── */
+.content-wrap {
+  padding: 3rem 2rem 2rem;
+}
+
+/* ────────────────────────────────────────────────────────
+   Post Title
+   ──────────────────────────────────────────────────────── */
+.post-title {
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.25rem;
+}
+
+/* ────────────────────────────────────────────────────────
+   Meta Section: Two‐Column Flex
+   ──────────────────────────────────────────────────────── */
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.meta-left,
+.meta-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Pill tags: Type */
+.tag-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
+
+.tag-pill.type-request {
+  background-color: #e0f7fa;
+  color: #006064;
+}
+
+.tag-pill.type-offer {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+/* Meta‐info badges */
+.meta-info {
+  background: var(--secondary-bg);
+  color: var(--text-medium);
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ────────────────────────────────────────────────────────
+   Section Headings
+   ──────────────────────────────────────────────────────── */
+
+
+.post-section h3 {
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  margin-bottom: 0.6rem;
+  border-bottom: 2px solid var(--secondary-bg);
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+/* ────────────────────────────────────────────────────────
+   Description Text
+   ──────────────────────────────────────────────────────── */
+.post-description {
+  color: var(--text-dark);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* ────────────────────────────────────────────────────────
+   Skill Tags
+   ──────────────────────────────────────────────────────── */
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.skill-tag {
+  background: #ede7f6;
+  color: #5e35b1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.skill-tag:hover {
+  background: #d1c4e9;
+}
+
+/* ────────────────────────────────────────────────────────
+   Action Button (Edit Post)
+   ──────────────────────────────────────────────────────── */
+.action-section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-btn {
+  background: var(--accent-blue);
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.edit-btn:hover {
+  background: #3730a3;
+  transform: translateY(-1px);
+}
+
+/* ────────────────────────────────────────────────────────
+   Responsive Breakpoints
+   ──────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .content-wrap {
+    padding: 2rem 1rem 1rem;
+  }
+  .post-title {
+    font-size: 1.8rem;
+  }
+  .post-meta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .edit-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+/* ─────────────────────────────────────────────────────────────
+   “See Your Post” / “Connect” / “Edit” Button Styles
+   ───────────────────────────────────────────────────────────── */
+
+.action-section {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.accept-btn,
+.edit-btn {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+/* “See Your Post” button: neutral outline style */
+
+
+/* “Edit Post” button: primary accent */
+.edit-btn {
+  background: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+.edit-btn:hover {
+  background: #3730a3;
+  transform: translateY(-1px);
+}
+
+/* “Connect” button: friendly green accent */
+.accept-btn {
+  width:25%;
+      color: #ffffff;
+    background: linear-gradient(90deg, var(--grad-color-1), var(--grad-color-2), var(--grad-color-1));
+    background-size: 200% auto;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    animation: gradientShift 4s ease infinite;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    transition: transform 0.2s ease;
+}
+.accept-btn:hover {
+  /* background: #059669; */
+  transform: translateY(-1px);
+}
+
+/* Ensure the buttons shrink nicely on small screens */
+@media (max-width: 640px) {
+  .action-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .accept-btn,
+  .edit-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+

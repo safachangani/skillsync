@@ -1,128 +1,343 @@
-.update-container {
-    margin: 2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
+/* update.css */
+.updates-section {
+  max-width: 1200px;
+  margin: 0 auto 2rem; /* center and add bottom margin */
+  padding: 0 1rem;
+}
+.updates-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+/* ============================================
+   Container: grid of all update cards
+   ============================================ */
+
+.updates-heading {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+/* ============================================
+   Each card’s base styles
+   ============================================ */
+.update-card {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+      display: flex;
+    flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+article .card-content .post-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;     /* number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   
-  .update-card {
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: transform 0.3s ease;
-  }
-  
-  .update-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .tab {
-    color: #c43939;
-    font-weight: 600;
-    text-transform: capitalize;
-  }
-  
-  .heading {
-    margin: 1rem 0;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
-  .description {
-    font-size: 1rem;
-    line-height: 1.4;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-  
-  .view-details-link {
-    display: inline-block;
-    padding: .5rem 1rem;
-    background-color: #ac7dff;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .view-details-link:hover {
-    background-color: #8e5ffb;
-  }
-  .avatar-u{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  .user-info{
-    display: flex;
+}
+.update-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   Top “gradient” bar (avatar + tab)
+   ============================================ */
+.card-top {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1.5rem;
+  /* padding-bottom: 2rem;  */
+}
+
+/* The avatar circle (overlapping the white content below) */
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  background-color: white;
+  position: relative;
+  margin: .7rem;
+}
+
+/* Tab label just below avatar */
+.post-tag {
+  margin: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #111827;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0.75rem;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+/* ============================================
+   White “bottom” block (content area)
+   ============================================ */
+.card-content {
+  background-color: #ffffff;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap:1rem
+}
+
+/* ============================================
+   Bookmark icon (top-right corner)
+   ============================================ */
+.bookmark-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  z-index: 3;
+}
+
+.bookmark-btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.bookmark-icon {
+  width: 20px;
+  height: 20px;
+  color: #374151;
+}
+
+/* ============================================
+   Post heading & description
+   ============================================ */
+.post-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  /* margin-bottom: 0.5rem; */
+  /* line-height: 1.3; */
+}
+
+ .card-content .post-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+  /* margin-bottom: 1.5rem; */
+}
+
+/* ============================================
+   Footer: action icons + “View Details”
+   ============================================ */
+.post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto; /* push it to bottom if content is short */
+  flex-direction: column;
+  gap: .5rem;
+}
+hr{
+  width: 100%;
+  height: .01rem;
+  border: none;
+  background-color: #00000038;
+}
+.post-actions {
+  display: flex;
+  gap: 1.25rem;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit; /* inherit from parent color */
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.action-btn:hover {
+  color: #111827;
+}
+
+.action-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.action-count {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* “View Details →” link */
+.view-details-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.view-details-link:hover {
+  color: #4f46e5; /* default accent if none overridden */
+}
+
+/* ============================================
+   Gradients by “type-<tab>”
+   (You can tweak these pastel stops to match your brand.)
+   ============================================ */
+
+/* OFFER (purple pastel) */
+.update-card.type-offer{
+  /* background: linear-gradient(135deg, #f3e8ff 0%, #f9d6ff 100%); */
+  background: linear-gradient(135deg,#f9f5ff  0%, #e9c5ff 100%);
+
+}
+
+.update-card.type-offer .view-details-link,
+.update-card.type-offer .action-btn{
+  color: #8b5cf6;
+}
+.update-card.type-offer .view-details-link:hover {
+  color: #7c3aed;
+}
+.update-card.type-offer .post-tag {
+  background-color:rgb(175, 135, 245);
+  font-weight: 100;
+}
+
+/* REQUEST (blue pastel) */
+.update-card.type-request
+
+{
+  /* background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); */
+background: linear-gradient(135deg, #eaf7ff 0%, #d4e7ff 50%, #c0d4ff 100%);
+
+}
+
+.update-card.type-request .view-details-link,
+.update-card.type-request .action-btn
+{
+  color: #3b82f6;
+}
+.update-card.type-request .view-details-link:hover {
+  color: #2563eb;
+}
+.update-card.type-request .post-tag {
+  background-color: #84b9fa;
+  font-weight: 100;
+}
+/* DESCUSSION (orange pastel) */
+.update-card.type-discussion  {
+  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+}
+
+.update-card.type-discussion .view-details-link,
+.update-card.type-discussion .action-btn {
+  color: #fb923c;
+}
+.update-card.type-discussion .view-details-link:hover {
+  color: #f97316;
+}
+
+/* SHOWCASE (mint pastel) */
+.update-card.type-showcase {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.update-card.type-showcase .view-details-link,
+.update-card.type-showcase .action-btn {
+  color: #10b981;
+}
+.update-card.type-showcase .view-details-link:hover {
+  color: #059669;
+}
+
+/* If you have additional tabs (e.g. “Help”, “Mentor”), define them similarly:
+   .update-card.type-help .card-top { background: … }
+   .update-card.type-help .view-details-link { color: … }
+*/
+
+/* ============================================
+   Responsive adjustments
+   ============================================ */
+@media (max-width: 768px) {
+  .updates-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1rem;
-    align-items: center;
   }
-  .user-name{
-    font-size: larger;
-    font-weight: 700;
+
+  .post-heading {
+    font-size: 1rem;
   }
-  .profile-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 80%;
-    max-width: 400px;
-    animation: fadeIn 0.3s ease-in-out;
+
+  .post-description {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -40%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
+@media (max-width: 480px) {
+  .updates-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
 
-.popup-message {
-    padding: 4rem;
+  .card-top {
+    padding-top: 1.25rem;
+    /* padding-bottom: 1.75rem; */
+  }
+
+  .user-avatar {
+    width: 90px;
+    height: 90px;
+    border-width: 2px;
+  }
+
+  .post-heading {
+    font-size: 0.95rem;
+  }
+
+  .post-description {
+    font-size: 0.875rem;
+  }
+
+  .post-actions {
+    gap: 0.75rem;
+  }
+  .card-content{
     text-align: center;
-    color: #333;
+  }
 }
+/* Gradient in Hex */
+/* linear-gradient(to right, #E4F6FF 0%, 27.2988498210907%, #C4DFFF 54.5976996421814%, 77.2988498210907%, #B7D2FD 100%); */
 
-.popup-message button {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.popup-message button:first-of-type {
-    background-color: #6647ff;
-    color: #fff;
-}
-
-.popup-message button:first-of-type:hover {
-    background-color: #846bff;
-}
-
-.popup-message button:last-of-type {
-    background-color: #ccc;
-    color: #333;
-}
-
-.popup-message button:last-of-type:hover {
-    background-color: #bbb;
-}
+/* Gradient in RGBA */
+/* linear-gradient(to right, rgba(228, 246, 255, 1) 0%, 27.2988498210907%, rgba(196, 223, 255, 1) 54.5976996421814%, 77.2988498210907%, rgba(183, 210, 253, 1) 100%); */

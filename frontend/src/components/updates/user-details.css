@@ -34,10 +34,10 @@
   margin-bottom: 1rem;
 }
 
-.view-details-link {
+.update-details .view-details-link {
   display: inline-block;
   padding: .5rem 1rem;
-  background-color: #ac7dff;
+  background-color:rgb(1, 1, 1);
   color: #fff;
   border: none;
   text-decoration: none;
@@ -47,13 +47,13 @@
   cursor: pointer;
 }
 
-.view-details-link:hover {
-  background-color: #8e5ffb;
+.update-details .view-details-link:hover {
+  background-color:rgb(0, 0, 0);
   border: none;
 
 }
-.view-details-link:active{
-  background-color: #cebbf1;
+.update-details .view-details-link:active{
+  background-color:rgb(38, 37, 40);
   animation: clickEffect 0.2s ease;
 }
 @keyframes clickEffect {

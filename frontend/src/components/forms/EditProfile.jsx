@@ -1,196 +1,140 @@
 import React, { useState } from 'react';
 import './edit-profile.css';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../navbar/Navbar';
 import axios from '../../axios';
-import Navbar from '../navbar/Navbar'
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
-import { TextField, Select, MenuItem } from '@mui/material';
-import { FormControl, InputLabel } from '@mui/material';
 
 const EditProfile = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [items, setItems] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [profile, setProfile] = useState({});
-  const [imageFile, setImageFile] = useState(null); // State to store the selected image file
-  const [imageSrc, setImageSrc] = useState('https://png.pngitem.com/pimgs/s/150-1503945_transparent-user-png-default-user-image-png-png.png');
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    fullName: '',
+    username: '',
+    bio: '',
+    location: '',
+    skills: [],
+    linkedin: '',
+    github: '',
+    portfolio: ''
+  });
 
-  const handleSkillChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setSkills([...skills, value]);
-    } else {
-      setSkills(skills.filter((skill) => skill !== value));
-    }
+  const [newSkill, setNewSkill] = useState('');
+  const [selectedSkillExp, setSelectedSkillExp] = useState('Beginner');
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const experienceLevels = ['Beginner', 'Intermediate', 'Advanced'];
+
+  const addSkill = () => {
+    if (!newSkill.trim()) return;
+    setFormData(prev => ({
+      ...prev,
+      skills: [...prev.skills, { name: newSkill.trim(), level: selectedSkillExp }]
+    }));
+    setNewSkill('');
+    setSelectedSkillExp('Beginner');
   };
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
 
-  const handleAddSkill = () => {
-    if (inputValue.trim() === '') {
-      setAlertMessage('Fill the field, please');
-    } else {
-      setItems([...items, inputValue]);
-      setInputValue('');
-      setAlertMessage('');
-    }
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
-  const handleRemoveSkill = (index) => {
-    setItems(items.filter((_, i) => i !== index));
-  };
+  const handleSave = async (e) => {
+    e.preventDefault();
 
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImageSrc(e.target.result);
-      };
-      reader.readAsDataURL(file);
-console.log(file);
-      // Store the selected file in the component state
-      setImageFile(file);
-    }
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-
-    const skillsArray = items;
-    const formData = new FormData(); // Create FormData object
-
-    // Append form fields to formData
-    formData.append('username', e.target.username.value);
-    formData.append('about', e.target.about.value);
-    formData.append('educationLevel', e.target.educationLevel.value);
-    formData.append('linkedinURL', e.target.linkedinURL.value);
-    formData.append('githubURL', e.target.githubURL.value);
-    formData.append('websiteURL', e.target.websiteURL.value);
-    console.log(imageFile);
-    // Append image file if available
-    if (imageFile) {
-        formData.append('avatar', imageFile);
-    }
-
-    // Append skills array
-    items.forEach((skill, index) => {
-        formData.append(`skills[${index}]`, skill);
-    });
-
-    // Convert FormData object to JSON-like object for logging
-const formDataObj = {};
-for (const [key, value] of formData.entries()) {
-    formDataObj[key] = value;
-}
-
-// Log the FormData object
-console.log(formDataObj);
     const token = localStorage.getItem('user-token');
-    axios.post('/edit-profile', formData, {
+    const form = new FormData();
+
+    form.append('fullName', formData.fullName);
+    form.append('username', formData.username);
+    form.append('bio', formData.bio);
+    form.append('location', formData.location);
+    form.append('linkedinURL', formData.linkedin);
+    form.append('githubURL', formData.github);
+    form.append('websiteURL', formData.portfolio);
+    form.append('skills', JSON.stringify(formData.skills)); // important
+    if (selectedFile) {
+      form.append('avatar', selectedFile); // image file
+    }
+
+    try {
+      const response = await axios.post('/edit-profile', form, {
         headers: {
-          "Content-Type": "multipart/form-data",
-          'Authorization':`Bearer ${token}`
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
         }
-    })
-        .then(response => {
-            // Handle success
-            console.log('Profile updated successfully:', response.data.savedUser);
-            // Redirect or show success message to the user
-            navigate("/control-panel", { state: { savedUser: response.data.savedUser } });
-        })
-        .catch(error => {
-            // Handle error
-            console.error('Error updating profile:', error);
-            // Show error message to the user
-        });
-};
+      });
+
+      console.log('Profile updated successfully:', response.data.savedUser);
+      navigate('/my-profile', { state: { savedUser: response.data.savedUser } });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
 
   return (
     <>
-      <Navbar></Navbar>
-      <div className="container-profile">
-        <h2>Edit Profile</h2>
-        <div className="row">
-          <div className="col-md-3">
-            <div className="text-center">
-              <img src={imageSrc} className="avatar img-circle" alt="avatar" />
-              <h4>Upload a different photo</h4>
-              <input type="file" className="form-control" onChange={handleImageChange} />
-            </div>
+      <Navbar />
+      <div className="edit-profile-container">
+        <h2>Edit Your Profile</h2>
+        <form onSubmit={handleSave}>
+          <label>Full Name</label>
+          <input name="fullName" onChange={handleChange} value={formData.fullName} />
+
+          <label>Username</label>
+          <input name="username" onChange={handleChange} value={formData.username} />
+
+          <label>Bio</label>
+          <textarea name="bio" onChange={handleChange} value={formData.bio} />
+
+          <label>Profile Picture</label>
+          <input type="file" onChange={handleFileChange} />
+
+          <label>Location</label>
+          <input name="location" onChange={handleChange} value={formData.location} />
+
+          <label>Select Skills</label>
+          <div className="skill-input-group">
+            <input
+              type="text"
+              placeholder="e.g., React, Figma"
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+            />
+            <select value={selectedSkillExp} onChange={(e) => setSelectedSkillExp(e.target.value)}>
+              {experienceLevels.map((level, i) => (
+                <option key={i} value={level}>{level}</option>
+              ))}
+            </select>
+            <button type="button" onClick={addSkill}>Add</button>
           </div>
-          <div className="col-md-9 personal-info">
-            <h3>Personal info</h3>
-            <form className="form-horizontal" onSubmit={onSubmit}>
-              <TextField className="form-control" label="Username" name="username" variant="outlined" fullWidth />
-              <TextField
-                className="form-control"
-                label="About you"
-                name="about"
-                multiline
-                rows={4}
-                variant="outlined"
-                fullWidth
-              />
-              {/* Other form fields */}
-              <div className="form-group">
-                <FormControl className="form-control" fullWidth>
-                  <InputLabel>Highest level of Education</InputLabel>
-                  <Select label="Highest level of Education" name="educationLevel" defaultValue="">
-                    <MenuItem value="">Select...</MenuItem>
-                    <MenuItem value="primary_school">Primary school or equivalent</MenuItem>
-                    <MenuItem value="high_school">High school or equivalent</MenuItem>
-                    <MenuItem value="associate">Associate degree or equivalent</MenuItem>
-                    <MenuItem value="bachelors">Bachelor's degree or equivalent</MenuItem>
-                    <MenuItem value="post_graduate">Post-graduate or equivalent</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              {/* Other form fields */}
-              <TextField className="form-control" label="LinkedIn URL (optional)" name="linkedinURL" variant="outlined" fullWidth />
-              {/* Other form fields */}
-              <TextField className="form-control" label="Github URL (optional)" name="githubURL" variant="outlined" fullWidth />
-              {/* Other form fields */}
-              <TextField className="form-control" label="Website URL (optional)" name="websiteURL" variant="outlined" fullWidth />
-              {/* Skills */}
-              <div className="form-group">
-                <TextField
-                  type="text"
-                  label="Add your skills"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  variant="outlined"
-                  fullWidth
-                />
-                <Button variant="contained" color="primary" id='btn-add' onClick={handleAddSkill}>Add</Button>
-              </div>
-              <div className="items">
-                {items.map((item, index) => (
-                  <span key={index}>
-                    {item}
-                    <i className="fas fa-times" onClick={() => handleRemoveSkill(index)}></i>
-                  </span>
-                ))}
-              </div>
-              {/* Submit and cancel buttons */}
-              <div className="form-group">
-                <Button type="submit" variant="contained" color="primary">Submit</Button>
-                <Link to={'/control-panel'}>
-                  <Button variant="contained"  id='btn-cancel' color="secondary">Cancel</Button>
-                </Link>
-              </div>
-            </form>
+
+          <div className="skills-list">
+            {formData.skills.map((skill, i) => (
+              <span key={i} className="skill-tag">
+                {skill.name} <small>({skill.level})</small>
+              </span>
+            ))}
           </div>
-        </div>
+
+          <label>Social Links</label>
+          <input placeholder="LinkedIn" name="linkedin" value={formData.linkedin} onChange={handleChange} />
+          <input placeholder="GitHub" name="github" value={formData.github} onChange={handleChange} />
+          <input placeholder="Portfolio" name="portfolio" value={formData.portfolio} onChange={handleChange} />
+
+          <div className="btn-group">
+            <button type="button" className="cancel-btn" onClick={() => navigate('/my-profile')}>Cancel</button>
+            <button type="submit" className="save-btn">Save Changes</button>
+          </div>
+        </form>
       </div>
     </>
   );
 };
 
 export default EditProfile;
-

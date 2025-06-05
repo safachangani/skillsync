@@ -1,65 +1,98 @@
-.container-profile {
-  margin-top: 50px;
+.edit-profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
 }
 
-.personal-info {
-  background-color: #f9f9f9;
-  padding: 0 20px;
-  border-radius: 5px;
-  display:flex;
-  flex-direction: column;
-  width: 700px;
+.edit-profile-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.form-control {
-  margin-bottom: 20px;
-}
-
-.items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.items span {
-  background-color: #b49ced;
-  padding: 5px 10px;
-  border-radius: 10px;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-}
-
-.items span i {
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-.avatar {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.row{
-  display: flex;
-  justify-content: center;
-}
-.personal-info form{
+.edit-profile-container form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-#btn-add{
-  /* margin: 1rem 0; */
-  background: #976ef9;
+
+input, textarea, select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
 }
-.form-group{
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.skill-input-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  
+}
+
+.skill-input-group input {
+  flex: 2;
+}
+
+.skill-input-group select {
+  flex: 1;
+}
+
+.skill-input-group button {
+  flex: 0 0 auto;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.edit-profile-container .skills-list .skill-tag {
+  background: #f3f3f3;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.save-btn {
+  background: black;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.btn-group {
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 }
-#btn-cancel{
-  background: #717171ed;
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid #aaa;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: anchor-center;
 }
+

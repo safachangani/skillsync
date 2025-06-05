@@ -1,88 +1,335 @@
-.post-req{
-    margin: 1rem 5rem
-}
-.post h1 {
-    color: ;
-}
-.post-req form{
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-}
-.post-req form input{
-   
-    padding: .5rem;
-}
- .post-req form textarea{
-    height: 20vh;
-}
-.post-req form button{
-    margin-left: auto;
-    padding: 0.7rem;
-    background: #945bf8;
-    border: none;
-    color: white;
-    letter-spacing: .03rem;
-    border-radius: .3rem;
-    font-weight: 600;
-    cursor: pointer;
+/* ─────────────────────────────────────────────────────────────────── */
+/*  Post a Request/Offer Modal (post.css)                             */
+/*  Scrollable + Pastel Twinkling Toggle Buttons                       */
+/* ─────────────────────────────────────────────────────────────────── */
 
-} 
-.tab {
-    /* overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1; */
+:root {
+  --text-dark: #1a1a1a;
+  --text-light: #666666;
+  --accent-lavender: #d9c2f7;
+  --accent-sky: #c2e3f7;
+  --accent-peach: #f7d8c2;
+  --accent-mint: #c2f7e1;
+  --card-bg: #ffffff;
+  --section-bg: #fafaff;
+  --gray-border: #e5e5e5;
+  --btn-dark: #1a1a1a;
+  --btn-hover: #333333;
+ --grad-color-1: #8b5cf6; /* Lavender */
+  --grad-color-2: #6366f1; /* Sky blue */
+  --toggle-inactive:rgb(242, 244, 255);
+  --toggle-animation-duration: 3s;
 }
 
-
-
-.tab button:hover {
-    background-color: #ddd;
+/* ───────────────────────────────────────────────────────── Loading State ─ */
+.profile-loading {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
 }
 
-.tab button.active {
-    background-color: #ccc;
+/* ───────────────────────────────────────────────────────── Modal Backdrop ─ */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-.tabcontent {
- 
+/* ───────────────────────────────────────────────────────── Modal Form ─ */
+.modal-form {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;            /* Prevent overflow beyond viewport */
+  padding: 1.75rem 1.5rem;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  overflow-y: auto;            /* Enables vertical scrolling if needed */
+  scrollbar-width: thin;       /* Firefox */
+  scrollbar-color: rgba(0,0,0,0.2) transparent;
 }
 
-/* #message {
-    margin-top: 20px;
-    color: green;
-} */
-
-
-.tab {
-    display: flex;
-    padding-bottom: 1rem;
+/* WebKit Scrollbar */
+.modal-form::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-form::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-form::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
 
-/* Hide the radio inputs */
-.tab input[type="radio"] {
-    display: none;
+/* ────────────────────────────────────────────────────────────────── Close Button ─ */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  z-index: 2;
 }
 
-/* Style for the labels */
-.tab label {
-    cursor: pointer;
-    padding: 10px 20px;
-    background-color: #ccc;
-    border: 2px solid #666;
-    border-radius: 5px;
-    margin-right: 10px;
-    border: none;
+/* ───────────────────────────────────────────────────────── Form Title/Sub ─ */
+.form-title {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-align: center;
 }
 
-/* Style for the selected label */
-.tab input[type="radio"]:checked + label {
-    background-color: #66c;
-    color: #fff;
+.form-subtitle {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  text-align: center;
 }
-#unlock{
-    color: #8527b0;
+
+/* ───────────────────────────────────────────────────────────────── Labels ─ */
+.form-label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-dark);
 }
-.post-req h2{
-    font-size: xx-large;
+
+.required-marker {
+  color: #d9534f;
+  margin-left: 2px;
+}
+
+/* ───────────────────────────────────────────────────────────────── Inputs ─ */
+.form-input {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ───────────────────────────────────────────────────────────────── Error ─ */
+.error-input {
+  border-color: #dc3545 !important;
+}
+
+.error-text {
+  margin-top: 0.25rem;
+  color: #dc3545;
+  font-size: 0.85rem;
+}
+
+/* ──────────────────────────────────────────────────────── Toggle Buttons ─ */
+.toggle-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Keyframes for pastel “twinkle” */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ─── Base toggle button ─────────────────────────────────────────── */
+.toggle-btn {
+  flex: 1;
+  padding: 0.55rem 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  background-color: var(--toggle-inactive);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* ─── Active toggle gets a moving gradient ───────────────────────── */
+.toggle-btn.active {
+  color: var(--text-dark);
+  background-color:rgb(216, 211, 253); /* soft pastel blue */
+  border-color:rgb(162, 147, 250);
+  font-weight: 600;
+}
+
+
+/* ─── Keep gradient “twinkle” on hover as well ────────────────────── */
+.toggle-btn.active:hover {
+  /* No change needed; the gradient is already animating */
+  color: #fff;
+  border-color: transparent;
+}
+
+/* ─── Ensure the gradient doesn’t get overridden ──────────────────── */
+.toggle-btn.active,
+.toggle-btn.active:hover {
+  background-clip: padding-box;
+}
+
+/* ───────────────────────────────────────────────────── Dynamic Skills ─ */
+.skill-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Skill badge */
+.skill-badge {
+  display: flex;
+  align-items: center;
+  background-color: #f1f5f9;
+  color: var(--text-dark);
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Remove “×” in badge */
+.remove-skill-btn {
+  background: transparent;
+  border: none;
+  margin-left: 6px;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.remove-skill-btn:hover {
+  color: #dc3545;
+}
+
+/* Input to type a new skill */
+.add-skill-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.add-skill-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+/* “Add” button for skill */
+.add-skill-btn {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color:black;
+  background-color:rgb(198, 188, 253);
+  border: 1px solid;
+  border-color:rgb(157, 140, 251);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-skill-btn:hover {
+  background-color: #4f46e5;
+}
+
+/* ─────────────────────────────────────────────────────── Submit Button ─ */
+.submit-button {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.65rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(
+    90deg,
+    var(--grad-color-1),
+    var(--grad-color-2),
+    var(--grad-color-1)
+  );
+  background-size: 200% auto;
+  background-position: 0% 50%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  animation: gradientShift 4s ease infinite;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.submit-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+}
+
+
+/* ───────────────────────────────────────────────────────── Responsive ─ */
+@media (max-width: 480px) {
+  .modal-form {
+    margin: 1rem;
+  }
+}
+
+/* ───────────────────────────────────────────────── Utility ─ */
+.hidden {
+  display: none;
+}
+.form-success-message {
+  background-color: #e6ffed;
+  color: #2a662a;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+.your-post-label{
+  color: #4b4b4f;
+  margin-bottom: 1rem;
+  font-weight: 600;
 }

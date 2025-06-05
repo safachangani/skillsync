@@ -1,0 +1,135 @@
+/* -----------------------------------------------------------------------------
+   1) RESET / BOX‐SIZING
+----------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* -----------------------------------------------------------------------------
+   2) IMPORT / SET THE BRAND FONT
+   –– If you’re trying out different Google Fonts, import them here and switch
+      the `--font-family-base` variable until you find the one you like.
+   –– Example below uses “Inter” + a fallback stack. Adjust accordingly.
+----------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* -----------------------------------------------------------------------------
+     3) CORE COLOR VARIABLES (BRAND PALETTE)
+     –– Choose just the ones you KNOW will not change per‐page.
+     –– E.g. your main purple and main lavender. Additional “page‐only” colors
+         should not go here.
+  ----------------------------------------------------------------------------- */
+  --color-primary: #4b3dff;    /* deep purple */
+  --color-secondary: #a97efd;  /* lavender */
+  --color-bg-light: #FAFAFA;   /* very light grey */
+  --color-text-dark: #222222;  /* dark text */
+  --color-text-light: #FAFAFA; /* white text */
+  --color-error: #e74c3c;      /* red for validation errors */
+
+  /* -----------------------------------------------------------------------------
+     4) TYPOGRAPHY VARIABLES
+     –– Pick your “Skillsync” font here. Once you decide, you never have to
+         override it again. If you test out “Inter,” “Roboto,” etc., swap it
+         here and refresh to see how it feels across all screens.
+  ----------------------------------------------------------------------------- */
+  --font-family-base: 'Inter', sans-serif;
+  --font-size-base: 16px;       /* 1 rem = 16px */
+  --line-height-base: 1.5;
+
+  /* -----------------------------------------------------------------------------
+     5) SPACING SCALE (OPTIONAL UTILITY)
+     –– You can reference these in components instead of hard‐coding px values.
+  ----------------------------------------------------------------------------- */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+}
+
+/* -----------------------------------------------------------------------------
+   6) GLOBAL ELEMENT STYLES
+   –– Anything you want to apply everywhere: body font, base link styles, etc.
+----------------------------------------------------------------------------- */
+html {
+  font-size: var(--font-size-base);
+}
+
+body {
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-base);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-secondary);
+}
+
+/* -----------------------------------------------------------------------------
+   7) BASE HEADING + PARAGRAPH RULES
+   –– If you want “h1 is always 2.5rem, h2 is 2rem” globally, define them here.
+----------------------------------------------------------------------------- */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+  color: var(--color-text-light);
+}
+h2 {
+  font-size: 2rem;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-dark);
+}
+h3 {
+  font-size: 1.75rem;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-dark);
+}
+p {
+  margin-bottom: var(--space-md);
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+
+/* -----------------------------------------------------------------------------
+   8) UTILITY CLASSES (OPTIONAL)
+   –– These can be used anywhere, but you only define them once.
+----------------------------------------------------------------------------- */
+.text-center {
+  text-align: center;
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+
+
+
+
+
+
+.update-card:hover::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: var(--gradient);
+    border-radius: 18px;
+    animation: gradient-flow 4s ease infinite;
+    background-size: 200% 200%;
+}
+/* Prevent background scroll */
+.no-scroll {
+  overflow: hidden;
+}

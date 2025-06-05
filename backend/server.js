@@ -10,6 +10,14 @@ const mongoose = require('mongoose');
 const skillSyncRouter = require('./routes/skillsync');
 const { Message } = require('./controller/controller');
 
+const session = require('express-session');
+const passport = require('passport');
+require('./controller/passport'); // Path to your passport config
+
+app.use(session({ secret: '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', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Configure CORS options
 const corsOptions = {
   // origin: ['https://skillsync-wefd.onrender.com', 'http://localhost:3000'],

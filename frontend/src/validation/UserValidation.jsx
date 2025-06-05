@@ -13,9 +13,13 @@ export const loginSchema = yup.object().shape({
 })
 
 export const requestOfferSchema = yup.object().shape({
-    tab: yup.string().required().oneOf(['request', 'offer']),
-    heading: yup.string().required('Heading is required'),
-    description: yup.string().required('Description is required').min(100, 'Description must be at least 100 characters')
+  type: yup.string().required().oneOf(['request', 'offer']),
+  title: yup.string().required('Title is required'),
+  category: yup.string().required('Category is required'),
+  description: yup
+    .string()
+    .required('Description is required')
+    .min(100, 'Description must be at least 100 characters'),
 });
 
 export const EditProfileSchema = yup.object().shape({

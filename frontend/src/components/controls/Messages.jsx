@@ -3,7 +3,7 @@ import { FaMoon, FaSun, FaPlus, FaPhone, FaVideo, FaSmile, FaPaperclip, FaPaperP
 import "./messages.css"
 import axios from "../../axios";
 import { io } from 'socket.io-client'
-
+import noChat from '../../assets/no-chat.svg'
 
 const socket = io("http://localhost:9000")
 const Messages = () => {
@@ -133,7 +133,16 @@ const UserList = ({ partners, onSelect, setMessageHistory }) => {
               <img alt={partner.partnerProfile.username} src={`http://localhost:9000/skillsync/uploads/${partner.partnerProfile.filename}`} className="user-avatar" />
               <div className="user-info">
                 <div className="user-name">{partner.partnerProfile.username}</div>
-                <p className="skills">Skill: {partner.partnerProfile.skills.join(', ')}</p>
+   <p className="skills">
+  {partner.partnerProfile.skills && partner.partnerProfile.skills.length > 0
+    ? partner.partnerProfile.skills
+        .map(skill => `${skill.name} (${skill.level})`)
+        .join(', ')
+    : 'No skills listed'}
+</p>
+
+
+
                 <div className="user-post-title">{partner.postTitle}</div>
               </div>
             </div>
@@ -194,7 +203,7 @@ const ChatSection = ({ selectedPartner, myId, messageHistory, setMessageHistory 
     });
     setNewMessage('');
     setSelectFile(null);
-
+    
   }
   const handleFile = (e) => {
     console.log("hello", e.target.files[0]);
@@ -204,14 +213,20 @@ const ChatSection = ({ selectedPartner, myId, messageHistory, setMessageHistory 
   const openFileDialog = () => {
     fileRef.current.click()
   }
+  
+ if (!selectedPartner) {
+  return (
+    <div className="chat-empty-state">
+      <img src={noChat} alt="Start chatting" className="empty-illustration" />
+      <h2>No Conversation Selected</h2>
+      <p>Select a user from the list to start chatting.</p>
+    </div>
+  );
+}
 
-  // console.log("sdsdfdsfd",selectedPartner);
-
-  if (!selectedPartner) {
-    return <div className="chat-section">Select a user to start chatting</div>;
-  }
 
   return (
+
     <div className="chat-section">
       <div className="chat-header">
         <img src={`http://localhost:9000/skillsync/uploads/${selectedPartner.partnerProfile.filename}`} alt="User" className="user-avatar" />
@@ -240,9 +255,9 @@ const ChatSection = ({ selectedPartner, myId, messageHistory, setMessageHistory 
             <div
               key={msg._id}
               className={isSent ? "message sent" : "message received"}
-            >
+              >
               <p>{msg.content}</p>
-              <span>{new Date(msg.createdAt).toLocaleTimeString()}</span>
+            <span>{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
               {msg.fileUrl && msg.fileType === "image" && (
                 <img src={msg.fileUrl} alt="sent" width="150" />
 
@@ -265,11 +280,7 @@ const ChatSection = ({ selectedPartner, myId, messageHistory, setMessageHistory 
           <FaSmile />
         </button>
         <button className="tool-btn" onClick={openFileDialog}>
-          {/* <input type="file" name="" id="" style={{  position: "absolute",
-          opacity: 0,
-          width: 0,
-          height: 0,}} onChange={handleFile}/>
-          <FaPaperclip /> */}
+          <FaPaperclip></FaPaperclip>
           <input type="file" name="" id="" ref={fileRef} style={{ display: 'none' }} onChange={handleFile} />
           {selectFile && (
             <div style={{

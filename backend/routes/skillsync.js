@@ -2,11 +2,14 @@ require('dotenv').config()
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const multer = require('multer');
-const { Signup, PostRequestOffer, UserProfile, Notification, Partner, Message, Comment, Announcement } = require('../controller/controller');
+const passport  = require("passport");
+const { Signup, PostRequestOffer, UserProfile, Notification, Partner, Message, Comment} = require('../controller/controller');
 const saltRounds = 10;
-
+const { OAuth2Client } = require('google-auth-library');
+// const jwt = require('jsonwebtoken');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Define storage for uploaded files
 const storage = multer.diskStorage({
@@ -22,11 +25,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/user-signup', async (req, res) => {
-    console.log('hi');
+    console.log('hi',saltRounds);
     console.log(req.body.Name);
     try {
         // Check if the email already exists
-        const existingUser = await Signup.findOne({ Email: req.body.Email });
+        const existingUser = await Signup.findOne({ email: req.body.Email });
         if (existingUser) {
             // If a user with the same email exists, respond with an error message
             return res.status(400).json({ message: 'Email already exists' });
@@ -34,37 +37,102 @@ router.post('/user-signup', async (req, res) => {
 
         // If the email is unique, proceed with user creation
         const salt = await bcrypt.genSalt(saltRounds);
+        console.log(salt,"hii");
         const hash = await bcrypt.hash(req.body.Password, salt);
+        
         if (!hash) {
             // Handle the case where the hash is empty (typically due to an issue with bcrypt)
             throw new Error('Password hashing failed');
         }
 
         const signup = new Signup({
-            Name: req.body.Name,
-            Email: req.body.Email,
-            Password: hash
+            name: req.body.Name,
+            email: req.body.Email,
+            password: hash
         });
 
         await signup.save();
+        console.log("account created");
+        
         res.status(200).json({ message: 'Account created successfully' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
+router.post('/google-login', async (req, res) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) {
+      return res.status(400).json({ message: 'No Google credential provided.' });
+    }
+
+    // 1) Verify the ID token with Google
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture, email_verified } = payload;
+
+    if (!email_verified) {
+      return res
+        .status(400)
+        .json({ message: 'Google account email not verified.' });
+    }
+
+    // 2) Look for an existing user by googleId
+    let user = await Signup.findOne({ googleId });
+
+if (!user) {
+  // If no googleId match, try by email
+  user = await Signup.findOne({ email });
+  if (user) {
+    // Link the Google ID if they already have a manual account
+    user.googleId = googleId;
+    user.avatar = user.avatar || picture;
+    await user.save();
+  } else {
+    // Create brand-new user
+    user = new Signup({
+      email,
+      googleId,
+      name,
+      avatar: picture,
+    });
+    await user.save();
+  }
+}
+
+    // 4) Issue your own JWT (same as manual login)
+    const payloadForJwt = {
+      _id:    user._id,
+      email: user.email,
+      name: user.name
+    };
+    const accessToken = jwt.sign(payloadForJwt, process.env.SECRET_KEY, {
+      expiresIn: '7d',
+    });
+
+    return res.status(200).json({ message: 'success', accessToken });
+  } catch (err) {
+    console.error('Error in /google-login:', err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 router.post('/user-login', async (req, res) => {
     // console.log('hauisdoi');
     // console.log('hi', req.body);
     try {
-        const Email = req.body.Email;
-        const Password = req.body.Password;
-        const user = await Signup.findOne({ Email });
-
+        const email = req.body.Email;
+        const password = req.body.Password;
+        const user = await Signup.findOne({ email });
+        console.log(user);
+        
         if (user) {
-            console.log('hi', user);
-            bcrypt.compare(Password, user.Password).then(function (result) {
+            // console.log('hi', user);
+            bcrypt.compare(password, user.password).then(function (result) {
                 if (result) {
                     const accessToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY);
                     res.json({ accessToken: accessToken, message: 'successfully logged in' });
@@ -81,54 +149,64 @@ router.post('/user-login', async (req, res) => {
 });
 
 function authenticateToken(req, res, next) {
+  console.log("hiiiiiy");
+  
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (token === null) return res.sendStatus(401);
     jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
         if (err) return res.sendStatus(403);
         req.user = user;
+        console.log(user,"auth");
+        
         next();
     });
 }
 
-router.get('/get-email', authenticateToken, (req, res) => {
+router.get('/get-user-profile', authenticateToken, async(req, res) => {
+  console.log(req.user,"get email");
+  
     // If the token is successfully verified, the user details should be available in req.user
-    const userName = req.user.Name;
-    // console.log(req.user);
-    // You can then use the userEmail to fetch the email from your database or use it directly
-    // For demonstration purposes, let's send back the email in the response
-    res.json({ Name: userName, userId: req.user._id });
+    const id = req.user._id;
+    const user = await UserProfile.findOne({userId:id});
+    console.log(user,"user profile");
+    
+   
+    res.json({ name: user.username, userId: req.user._id,filename:user.filename });
 });
-router.post('/post-requst-offer', authenticateToken, (req, res) => {
-    console.log(req.user);
+router.post('/post-request-offer', authenticateToken, (req, res) => {
+  console.log('📥 Incoming Post Data:', req.body);
 
-    // Create a new instance of the model with validated data
-    const postRequestOffer = new PostRequestOffer({
-        tab: req.body.tab,
-        heading: req.body.heading,
-        description: req.body.description,
-        userId: req.user._id
+  const { title, type, category, description, skills, createdAt } = req.body;
+
+  // Create a new instance of the model
+  const postRequestOffer = new PostRequestOffer({
+    title,
+    type,
+    category,
+    description,
+    skills,       // array of strings
+    createdAt,
+    userId: req.user._id
+  });
+
+  // Save to DB
+  postRequestOffer.save()
+    .then(savedData => {
+      res.status(200).send('Request successfully saved');
+    })
+    .catch(err => {
+      console.error('❌ DB Save Error:', err);
+      res.status(500).send('Internal Server Error');
     });
+});
 
-    // Save the data to the database
-    postRequestOffer.save()
-        .then(savedData => {
-            // Data saved successfully
-            // console.log(savedData);
-            res.status(200).send('Request successfully saved');
-        })
-        .catch(err => {
-            // Error occurred while saving
-            console.error(err);
-            res.status(500).send('Internal Server Error');
-        });
-})
 
 router.get('/get-updates', authenticateToken, async (req, res) => {
     try {
         // Find all documents in the collection
         const postRequestOffers = await PostRequestOffer.find({}).exec();
-        console.log(postRequestOffers, "postreq");
+        // console.log(postRequestOffers, "postreq");
         const updatedPostRequestOffers = [];
         for (let i = 0; i < postRequestOffers.length; i++) {
             const postRequestOffer = postRequestOffers[i];
@@ -144,9 +222,12 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
                 // Create a new object with the required fields
                 const updatedOffer = {
                     _id: postRequestOffer._id,
-                    tab: postRequestOffer.tab,
-                    heading: postRequestOffer.heading,
+                    type: postRequestOffer.type,
+                    title: postRequestOffer.title,
                     description: postRequestOffer.description,
+                    category: postRequestOffer.category,
+                    skills:postRequestOffer.skills,
+                    createdAt:postRequestOffer.createdAt,
                     userId: userId, // Assign userId separately
                     filename: filename,
                     username: username
@@ -154,7 +235,7 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
                 updatedPostRequestOffers.push(updatedOffer);
             }
         }
-        console.log(updatedPostRequestOffers, "post");
+        // console.log(updatedPostRequestOffers, "post");
         res.status(200).json(updatedPostRequestOffers);
     } catch (error) {
         console.error('Error retrieving post request offers:', error);
@@ -163,54 +244,108 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
 });
 
 router.get("/get-update/:postId", authenticateToken, async (req, res) => {
-    try {
-        const postId = req.params.postId;
-        console.log("hi", postId);
-        const postReqOff = await PostRequestOffer.findOne({ _id: postId });
-        console.log(postReqOff);
-        res.status(201).json({ postReqOff });
-    } catch (err) {
-        console.log(err);
+  try {
+    const postId = req.params.postId;
+
+    // 1) Fetch the post itself
+    const postReqOff = await PostRequestOffer.findById(postId).lean();
+    if (!postReqOff) {
+      return res.status(404).json({ error: "Post not found" });
     }
-})
+
+    // 2) Fetch the corresponding user profile by postReqOff.userId
+    const userProfile = await UserProfile.findOne({ userId: postReqOff.userId }).lean();
+    console.log(userProfile,"userprofile");
+    
+    if (!userProfile) {
+      // It’s possible the profile doesn’t exist yet
+      return res.status(404).json({ error: "User profile not found" });
+    }
+
+    // 3) Merge username + location into the post object
+    const merged = {
+      ...postReqOff,
+      username: userProfile.username,
+      location: userProfile.location,
+      profileId: userProfile._id
+    };
+
+    // 4) Send back the merged object
+    return res.status(200).json({ postReqOff: merged });
+
+  } catch (err) {
+    console.error("Error in /get-update/:postId:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 router.post('/edit-profile', authenticateToken, upload.single('avatar'), async (req, res) => {
-    console.log('hi');
-    // Access form data using req.body
-    // console.log(req.body);
+  try {
+    console.log('hi', req.body,"useid",req.user._id);
 
-    // Access uploaded file using req.file
-    // console.log(req.file);
+   const {
+  fullName,
+  username,
+  bio,
+  location,
+  skills,
+  linkedinURL,
+  githubURL,
+  websiteURL,
+} = req.body;
 
-    // Assuming your User model has fields corresponding to the form data
-    const newUser = new UserProfile({
-        username: req.body.username,
-        about: req.body.about,
-        skills: req.body.skills,
-        educationLevel: req.body.educationLevel,
-        linkedinURL: req.body.linkedinURL,
-        githubURL: req.body.githubURL,
-        websiteURL: req.body.websiteURL,
-        userId: req.user._id,
-        filename: req.file.originalname, // Include the image name
-        // path: req.file.path // You may also include the path if needed
+const skillsData = req.body.skills;
 
-    });
+let parsedSkills = [];
+try {
+  parsedSkills = typeof skillsData === 'string' ? JSON.parse(skillsData) : skillsData;
+} catch (err) {
+  console.error('Invalid skills JSON:', err);
+  parsedSkills = [];
+}
 
-    // Save the new user to the database
-    newUser.save()
-        .then(savedUser => {
-            console.log('User saved successfully:', savedUser);
-            res.status(201).json({ message: 'User saved successfully', savedUser });
-        })
-        .catch(error => {
-            console.error('Error saving user:', error);
-            res.status(500).json({ error: 'An error occurred while saving user' });
-        });
-})
+
+const profileData = {
+  fullName,
+  username,
+  bio,
+  location,
+  skills: parsedSkills,
+  linkedinURL,
+  githubURL,
+  websiteURL,
+  filename: req.file?.originalname || null,
+  userId: req.user._id
+};
+
+
+    const existingProfile = await UserProfile.findOne({ userId: req.user._id });
+
+    if (existingProfile) {
+      // Update existing profile
+      const updatedProfile = await UserProfile.findOneAndUpdate(
+        { userId: req.user._id },
+        { $set: profileData },
+        { new: true }
+      );
+      console.log('Profile updated:', updatedProfile);
+      return res.status(200).json({ message: 'Profile updated', savedUser: updatedProfile });
+    } else {
+      // Create new profile
+      const newUser = new UserProfile(profileData);
+      const savedUser = await newUser.save();
+      console.log('New profile created:', savedUser);
+      return res.status(201).json({ message: 'Profile created', savedUser });
+    }
+  } catch (error) {
+    console.error('Error handling profile:', error);
+    return res.status(500).json({ error: 'An error occurred while saving or updating user profile' });
+  }
+});
+
 
 router.get('/get-userId', authenticateToken, async (req, res) => {
-    // console.log(req.user._id);
+    
     try {
         res.status(201).json({ userId: req.user._id });
     } catch (err) {
@@ -219,65 +354,88 @@ router.get('/get-userId', authenticateToken, async (req, res) => {
 })
 
 router.post('/send-notification', authenticateToken, async (req, res) => {
-    console.log(req.body, "hi");
-    try {
-        const { recipientUserId, message, postId } = req.body;
+  try {
+    console.log("senderid",req.user._id);
+    
+    const { recipientUserId, postId, type } = req.body;
+    // e.g. type === 'accepted'
 
-        // Create a new notification
-        const notification = new Notification({
-            postId: postId,
-            recipientUserId,
-            senderUserId: req.user._id,
-            message
-        });
+    // Optionally fetch the post title so you can embed it in the message:
+    const post = await PostRequestOffer.findById(postId).lean();
+    const title = post ? post.title : 'your post';
 
-        // Save the notification to the database
-        await notification.save();
+    // If it's an “accepted” notification, message could read:
+    const message =
+      type === 'accepted'
+        ? `Your ${title} has been accepted by a partner.`
+        : `Your ${title} was declined.`;
 
-        res.status(201).json({ message: 'Notification sent successfully.' });
-    } catch (error) {
-        console.error('Error sending notification:', error);
-        res.status(500).json({ error: 'Internal server error.' });
-    }
+    const notification = new Notification({
+      postId,
+      recipientUserId,
+      senderUserId: req.user._id,
+      message,
+      handled: false,
+      type
+    });
+
+    await notification.save();
+    return res.status(201).json({ message: 'Notification sent successfully.' });
+  } catch (err) {
+    console.error('Error sending notification:', err);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
 });
-
-// Route to get notifications for a specific user
-router.get('/get-notifications', authenticateToken, async (req, res) => {
-
-
+// POST /handle-notification
+// Body: { notificationId: <ObjectId>, action: 'accepted' | 'declined' }
+router.post(
+  '/handle-notification',
+  authenticateToken,
+  async (req, res) => {
     try {
-        const userId = req.user._id;
-        const notifications = await Notification.find({ recipientUserId: userId }).sort({ createdAt: -1 }).limit(10);
-        // console.log(notifications, "here");
-        let senderId
-        const enhancedNotifications = await Promise.all(notifications.map(async (notification) => {
-            const sender = await Signup.findById(notification.senderUserId);
-
-            const senderName = sender ? sender.Name : 'Unknown'; // Use 'Unknown' if sender is not found
-            senderId = sender ? sender._id : ''
-
-            let enhancedMessage = '';
-
-            if (notification.message === "Your post has been accepted.") {
-                enhancedMessage = `Your post has been accepted by ${senderName}`;
-            } else if (notification.message === "Let's become partners!") {
-                enhancedMessage = `You are now partners with ${senderName}`;
-            } else {
-                // Handle other types of messages
-                enhancedMessage = notification.message; // Use the original message
-            }
-
-            return { ...notification.toObject(), message: enhancedMessage };
-        }));
-        res.status(201).json({ notifications: enhancedNotifications, });
-    } catch (error) {
-        console.error('Error fetching notifications:', error);
-        res.status(500).json({ error: 'Internal server error.' });
+      const { notificationId, action } = req.body;
+      if (!['accepted', 'declined'].includes(action)) {
+        return res.status(400).json({ error: 'Invalid action.' });
+      }
+      const updated = await Notification.findByIdAndUpdate(
+        notificationId,
+        {
+          handled: true,
+          type: action,
+          message:
+            action === 'accepted'
+              ? 'You are now partners.'
+              : 'Your request was declined.'
+        },
+        { new: true }
+      );
+      return res.status(200).json({ notification: updated });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Server error.' });
     }
+  }
+);
 
-});
+
+router.get('/get-notifications',authenticateToken,async (req, res) => {
+  try {
+      const userId = req.user._id.toString();
+      const notifs = await Notification.find({
+        recipientUserId: userId,
+        handled: false
+      })
+        .sort({ createdAt: -1 })
+        .lean();
+      return res.status(200).json({ notifications: notifs });
+    } catch (err) {
+      console.error('Error in GET /get-notifications:', err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+  }
+);
+
 router.post("/send-message", authenticateToken, async (req, res) => {
-    console.log("hi");
     try {
 
         const notification = new Notification({
@@ -341,6 +499,102 @@ router.post("/add-partner", authenticateToken, async (req, res) => {
     }
 });
 
+// POST /partners/accept
+// Body: { postId: <ObjectId>, requesterId: <ObjectId> }
+// Purpose: User A (authenticated) accepts User B’s (requesterId) connection on postId.
+router.post('/partners/accept',authenticateToken,async (req, res) => {
+ try {
+    console.log(req.body,"partner");
+    
+    const accepterId = req.user._id.toString();
+    const { postId, requesterId } = req.body;
+
+    // 1) Upsert Partner documents so they become partners
+    let userDoc = await Partner.findOne({ userId: accepterId });
+    let partnerDoc = await Partner.findOne({ userId: requesterId });
+
+    if (!userDoc) {
+      userDoc = new Partner({
+        userId: accepterId,
+        partnerIds: [{ partnerId: requesterId, postId }]
+      });
+    } else {
+      const existing = userDoc.partnerIds.find(
+        (p) => p.partnerId.toString() === requesterId
+      );
+      if (existing) {
+        existing.postId = postId;
+      } else {
+        userDoc.partnerIds.push({ partnerId: requesterId, postId });
+      }
+    }
+
+    if (!partnerDoc) {
+      partnerDoc = new Partner({
+        userId: requesterId,
+        partnerIds: [{ partnerId: accepterId, postId }]
+      });
+    } else {
+      const existing = partnerDoc.partnerIds.find(
+        (p) => p.partnerId.toString() === accepterId
+      );
+      if (!existing) {
+        partnerDoc.partnerIds.push({ partnerId: accepterId, postId });
+      }
+    }
+
+    await userDoc.save();
+    await partnerDoc.save();
+
+    // 2) Mark original “connect” request as handled (so it disappears)
+    await Notification.updateMany(
+      {
+        postId,
+        recipientUserId: accepterId,
+        senderUserId: requesterId,
+        type: 'connect',
+        handled: false
+      },
+      { $set: { handled: true } }
+    );
+
+    // 3) Grab usernames so we can build a nice “accepted” message
+    const accepterProfile = await UserProfile.findOne({ userId: accepterId }).lean();
+    const requesterProfile = await UserProfile.findOne({ userId: requesterId }).lean();
+    const accepterName = accepterProfile?.username || 'Someone';
+    const requesterName = requesterProfile?.username || 'Someone';
+
+    // 4) Create “accepted” notification for **requester** → “You are now partners with {accepterName}.”
+    const msgToRequester = `You are now partners with ${accepterName}.`;
+    await Notification.create({
+      postId,
+      recipientUserId: requesterId,
+      senderUserId: accepterId,
+      senderUsername: accepterName,
+      message: msgToRequester,
+      type: 'accepted',
+      handled: false
+    });
+
+    // 5) Create “accepted” notification for **accepter** → “You are now partners with {requesterName}.”
+    const msgToAccepter = `You are now partners with ${requesterName}.`;
+    await Notification.create({
+      postId,
+      recipientUserId: accepterId,
+      senderUserId: requesterId,
+      senderUsername: requesterName,
+      message: msgToAccepter,
+      type: 'accepted',
+      handled: false
+    });
+
+    return res.status(200).json({ message: msgToRequester });
+  } catch (err) {
+    console.error('Error in /partners/accept:', err);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+  }
+);
 router.get('/get-profile', authenticateToken, async (req, res) => {
     try {
         // Fetch profile data from the database based on the user ID in the token
@@ -412,26 +666,10 @@ router.get('/get-update/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-router.get('/get-messages/:roomId', async (req, res) => {
-    try {
-        // Retrieve the partnerId from the request parameters
-        const roomId = req.params.roomId;
 
-        // Find messages where the receiverId is the partnerId
-        const messageCollection = await Message.find({ roomId: roomId });
-
-
-        // Send the messages as a response
-        res.json({ messageCollection });
-    } catch (error) {
-        // Handle errors
-        console.error('Error fetching messages:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
 router.get('/get-message-history/:partnerId', authenticateToken, async (req, res) => {
-    // console.log("hohh",req.user,req.params);
+  
     const userId = req.user._id;
     const partnerId = req.params.partnerId;
     console.log("does nodemon working");
@@ -504,7 +742,7 @@ router.get('/get-all-profiles', authenticateToken, async (req, res) => {
     try {
         // Fetch all profiles from the database
         const profiles = await UserProfile.find();
-        console.log(profiles);
+        // console.log(profiles);
         res.json(profiles);
     } catch (error) {
         console.error('Error fetching profiles:', error);
@@ -512,34 +750,6 @@ router.get('/get-all-profiles', authenticateToken, async (req, res) => {
     }
 });
 
-router.post("/announcement", authenticateToken, async (req, res) => {
-    console.log(req.body)
-    try {
-
-        const announcement = new Announcement({
-            topic: req.body.topic,
-            location: req.body.location,
-            date: req.body.date,
-            time: req.body.time,
-            createdBy: req.user._id
-        });
-        await announcement.save();
-        res.status(201).json({ message: 'Announcement created successfully' });
-    } catch (error) {
-        console.error('Token verification error:', error);
-        res.status(401).json({ message: 'Unauthorized' });
-    }
-})
-router.get("/get-announcement", authenticateToken, async (req, res) => {
-    try {
-        // Fetch all announcements from the database
-        const announcements = await Announcement.find();
-        res.json(announcements);
-    } catch (error) {
-        console.error('Error fetching announcements:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-})
 
 router.get("/check-profile-data", authenticateToken, async (req, res) => {
     try {
@@ -560,12 +770,50 @@ router.get("/check-profile-data", authenticateToken, async (req, res) => {
 });
 
 router.post('/upload', upload.single('file'), (req, res) => {
-    console.log("filee",req.file);    
+    console.log("filee", req.file);
     const fileUrl = `http://localhost:9000/skillsync/uploads/${req.file.filename}`;
-    console.log(fileUrl,"fileUrl");
-    
+    console.log(fileUrl, "fileUrl");
+
     res.json({ fileUrl });
-  });
+});
+
+
+router.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+    
+    
+);
+console.log("google workss");
+router.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        console.log("google working or not");
+        
+        // Send a token or redirect to frontend
+        res.redirect('http://localhost:3000/home'); // Or send token as query param
+    }
+);
+
+
+
+
+  // GET profile by ID
+router.get("/profile-visit/:id", async (req, res) => {
+  try {
+      console.log("user profile ");
+    const profile = await UserProfile.findById(req.params.id);
+    
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.json(profile);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 module.exports = router;
 
