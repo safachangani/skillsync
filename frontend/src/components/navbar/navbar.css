@@ -389,8 +389,10 @@
    =========================================== */
 .mobile-sidebar {
   position: fixed;
-  top: 0; left: -100%;
-  width: 240px; height: 100vh;
+  top: 0; 
+  left: -100%;
+  width: 240px;
+   height: 100vh;
   background-color: #ffffff;
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);
   padding: 2rem 1rem;
@@ -431,8 +433,10 @@
 /* Overlay behind the sidebar */
 .overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100vh;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100vh;
   background-color: rgba(0,0,0,0.4);
   z-index: 1400;
 }
@@ -781,9 +785,3 @@
     right:-1rem;
   }
 }
-
-/* ────────────────────────────────────────────────────────────────────────────── */
-/* IMPORTANT: No other existing desktop styles need to change.                    */
-/* All of your original rules for .navigation, .navigation-icons,               */
-/* .notification-dropdown, etc., continue to work exactly as before.             */
-/* ────────────────────────────────────────────────────────────────────────────── */

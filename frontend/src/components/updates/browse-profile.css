@@ -154,14 +154,6 @@ body {
   margin-top: auto;
 }
 
-/* .skill-tag {
-  background: var(--clr-secondary);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  transition: transform 0.2s;
-} */
 
 .skill-tag:hover {
   transform: scale(1.05);
@@ -222,7 +214,7 @@ body {
 }
 /* Avatar wrapper: gradient ring + shadow */
 .avatar-wrapper {
-width: 100px;
+    width: 100px;
     height: 100px;
     padding: 3px;
     border-radius: 50%;

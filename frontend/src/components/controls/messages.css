@@ -1,11 +1,4 @@
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    transition: background 0.3s, color 0.3s, border-color 0.3s;
-  } */
-  
+
   .app {
     background: var(--bg-color);
     min-height: 100vh;
@@ -15,7 +8,7 @@
   }
   
   :root {
-    /* Light Theme */
+   
     --bg-color: #f8fafc;
     --primary-color: #1e293b;
     --secondary-color: #64748b;
@@ -35,7 +28,7 @@
     --border-color: #e2e8f0;
   }
   
-  /* Dark Theme */
+ 
   .app.dark-theme {
     --bg-color: #0f172a;
     --primary-color: #ffffff;
@@ -68,7 +61,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
   
-  /* User List */
+ 
   .user-list {
     width: 320px;
     background: var(--user-list-bg);
@@ -152,7 +145,7 @@
     overflow: hidden;
   }
   
-  /* Chat Section */
+
   .chat-section {
     flex: 1;
     display: flex;
@@ -215,7 +208,7 @@
     background: var(--accent-color);
     color: white;
   }
-  /
+  
   
   .message-bubble {
     max-width: 65%;
@@ -241,7 +234,7 @@
     margin-top: 0.5rem;
   }
   
-  /* Input Area */
+ 
   .message-input-container {
     padding: 1.5rem;
     background: var(--chat-bg);
@@ -284,7 +277,7 @@
     color: white;
   }
   
-  /* Theme Toggle */
+
   .theme-toggle {
     position: fixed;
     bottom: 2rem;
@@ -423,7 +416,7 @@
   50%  { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
-/* Responsive Layout */
+
 @media (max-width: 1024px) {
   .chat-container {
     flex-direction: column;

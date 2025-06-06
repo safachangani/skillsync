@@ -277,8 +277,8 @@
 
 /* “Connect” button: friendly green accent */
 .accept-btn {
-  width:25%;
-      color: #ffffff;
+    width:25%;
+    color: #ffffff;
     background: linear-gradient(90deg, var(--grad-color-1), var(--grad-color-2), var(--grad-color-1));
     background-size: 200% auto;
     border: none;

@@ -49,15 +49,6 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* .profile-header-gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.85;
-  background: inherit;
-} */
 
 .profile-header-content {
   /* position: relative; */
@@ -397,7 +388,7 @@
   position: absolute;
   left: 0;
   bottom: -4px;                   /* slightly farther down */
-  width: 0%;
+  width: 0;
   height: 2px;
   background: currentColor;
   transition: width 0.35s ease-in-out;
