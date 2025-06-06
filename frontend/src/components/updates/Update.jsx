@@ -72,7 +72,7 @@ function Update() {
               {/* 2) Top gradient area: avatar + type tag + timestamp */}
               <div className="card-top">
                 <img
-                  src={`http://localhost:9000/skillsync/uploads/${update.filename}`}
+                  src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${update.filename}`}
                   alt={`${update.username}'s avatar`}
                   className="user-avatar"
                 />

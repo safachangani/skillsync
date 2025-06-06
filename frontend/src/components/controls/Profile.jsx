@@ -42,7 +42,7 @@ const Profile = () => {
                 className="profile-avatar"
                 src={
                   profile.filename
-                    ? `http://localhost:9000/skillsync/uploads/${profile.filename}`
+                    ? `https://skillsync-backend-xiwx.onrender.comskillsync/uploads/${profile.filename}`
                     : defaultImage
                 }
                 alt="Profile"

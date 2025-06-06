@@ -130,7 +130,7 @@ const UserList = ({ partners, onSelect, setMessageHistory }) => {
               handleSelectPartner(partner)
 
             }}>
-              <img alt={partner.partnerProfile.username} src={`http://localhost:9000/skillsync/uploads/${partner.partnerProfile.filename}`} className="user-avatar" />
+              <img alt={partner.partnerProfile.username} src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${partner.partnerProfile.filename}`} className="user-avatar" />
               <div className="user-info">
                 <div className="user-name">{partner.partnerProfile.username}</div>
    <p className="skills">
@@ -229,7 +229,7 @@ const ChatSection = ({ selectedPartner, myId, messageHistory, setMessageHistory 
 
     <div className="chat-section">
       <div className="chat-header">
-        <img src={`http://localhost:9000/skillsync/uploads/${selectedPartner.partnerProfile.filename}`} alt="User" className="user-avatar" />
+        <img src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${selectedPartner.partnerProfile.filename}`} alt="User" className="user-avatar" />
         <div className="chat-header-info">
           <div className="chat-user-name">{selectedPartner.partnerProfile.username}</div>
           <span>{selectedPartner.postTitle}</span>

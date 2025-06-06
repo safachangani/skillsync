@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:9000/skillsync',
+  baseURL: 'https://skillsync-backend-xiwx.onrender.com/skillsync',
   //https://skillsync-backend-xiwx.onrender.com/skillsync
   withCredentials: true, // Send cookies with requests
   headers: {

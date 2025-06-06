@@ -36,7 +36,7 @@ const ProfileDetail = () => {
         <div className="profile-info">
         <img
           className="profile-avatar-large"
-          src={`http://localhost:9000/skillsync/uploads/${profile.filename}`}
+          src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${profile.filename}`}
           alt={profile.username}
         />
           {profile.fullName && <p className="full-name">{profile.fullName}</p>}

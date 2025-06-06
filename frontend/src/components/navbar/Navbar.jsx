@@ -245,7 +245,7 @@ function Navbar({ openPostPopup }) {
               }}
             >
               {filename ?
-              (<img className="nav-icon"  src={`http://localhost:9000/skillsync/uploads/${filename}`} alt="" />
+              (<img className="nav-icon"  src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${filename}`} alt="" />
 
               ):(
                 <UserCircleIcon className="nav-icon" />
