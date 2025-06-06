@@ -21,7 +21,7 @@ app.use(passport.session());
 // Configure CORS options
 const corsOptions = {
   // origin: ['https://skillsync-wefd.onrender.com', 'http://localhost:3000'],
-  origin: 'http://localhost:3000',
+  origin: 'https://skillsync-wefd.onrender.com',
   credentials: true,
   optionSuccessStatus: 200
 };
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/skillsync/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB database with the database name 'skillsync'
-mongoose.connect("mongodb://localhost:27017", {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: 'skillsync'
@@ -113,7 +113,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://skillsync-wefd.onrender.com",
     methods: ["GET", "POST"]
   }
 })

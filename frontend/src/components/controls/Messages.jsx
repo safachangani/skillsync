@@ -5,7 +5,7 @@ import axios from "../../axios";
 import { io } from 'socket.io-client'
 import noChat from '../../assets/no-chat.svg'
 
-const socket = io("http://localhost:9000")
+const socket = io("https://skillsync-backend-xiwx.onrender.com")
 const Messages = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null)
