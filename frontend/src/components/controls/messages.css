@@ -324,7 +324,9 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease-in-out;
 }
-
+.message p{
+  color:black
+}
 .message:hover {
   transform: scale(1.02);
 }
@@ -340,7 +342,7 @@
   align-self: flex-start;
   background: var(--message-received-bg);
   border-bottom-left-radius: 4px;
-  color: var(--primary-color);
+  color: black;
 }
 
 .message-time {
