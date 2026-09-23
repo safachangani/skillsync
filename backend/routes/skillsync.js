@@ -149,7 +149,7 @@ router.post('/user-login', async (req, res) => {
 });
 
 function authenticateToken(req, res, next) {
-  console.log("hiiiiiy");
+  // console.log("hiiiiiy");
   
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -157,20 +157,23 @@ function authenticateToken(req, res, next) {
     jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
         if (err) return res.sendStatus(403);
         req.user = user;
-        console.log(user,"auth");
+        // console.log(user,"auth");
         
         next();
     });
 }
 
 router.get('/get-user-profile', authenticateToken, async(req, res) => {
-  console.log(req.user,"get email");
+  // console.log(req.user,"get email");
   
     // If the token is successfully verified, the user details should be available in req.user
     const id = req.user._id;
     const user = await UserProfile.findOne({userId:id});
-    console.log(user,"user profile");
-    
+    // console.log(user,"user profile");
+     if (!user) {
+      // No profile created yet — this is a normal state, not an error
+      return res.json({ name: null, userId: req.user._id, filename: null, profileExists: false });
+    }
    
     res.json({ name: user.username, userId: req.user._id,filename:user.filename });
 });
@@ -217,8 +220,8 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
 
             if (userProfile) {
                 const filename = userProfile.filename;
-                const username = userProfile.username;
-
+                const username = userProfile.username || userProfile.fullName;
+              
                 // Create a new object with the required fields
                 const updatedOffer = {
                     _id: postRequestOffer._id,
@@ -230,7 +233,8 @@ router.get('/get-updates', authenticateToken, async (req, res) => {
                     createdAt:postRequestOffer.createdAt,
                     userId: userId, // Assign userId separately
                     filename: filename,
-                    username: username
+                    username: username,
+                  
                 };
                 updatedPostRequestOffers.push(updatedOffer);
             }
@@ -771,7 +775,7 @@ router.get("/check-profile-data", authenticateToken, async (req, res) => {
 
 router.post('/upload', upload.single('file'), (req, res) => {
     console.log("filee", req.file);
-    const fileUrl = `http://localhost:9000/skillsync/uploads/${req.file.filename}`;
+    const fileUrl = `${process.env.REACT_APP_API_URL}/skillsync/uploads/${req.file.filename}`;
     console.log(fileUrl, "fileUrl");
 
     res.json({ fileUrl });
@@ -790,7 +794,7 @@ router.get('/auth/google/callback',
         console.log("google working or not");
         
         // Send a token or redirect to frontend
-        res.redirect('http://localhost:3000/home'); // Or send token as query param
+        res.redirect(`${process.env.CLIENT_URL}/home`); // Or send token as query param
     }
 );
 
@@ -814,6 +818,47 @@ router.get("/profile-visit/:id", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+router.post('/update/:id/like',authenticateToken,async(req,res)=>{
+  try{
+    const postId = req.params.id;
+    const userId = req.user._id;
+
+    const post = await PostRequestOffer.findById(postId);
+    if(!post){
+      return res.status(404).json({message:'Post not found'});
+    }
+    // Ensure likedBy always exists, even for older documents
+    if (!Array.isArray(post.likedBy)) {
+      post.likedBy = [];
+    }
+
+    const alreadyLiked = post.likedBy.some(
+      (id) => id.toString() === userId.toString()
+    );
+   
+    if (alreadyLiked) {
+      // Unlike
+      post.likedBy = post.likedBy.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+      post.likes = Math.max((post.likes || 0) - 1, 0);
+    } else {
+      // Like
+      post.likedBy.push(userId);
+      post.likes = (post.likes || 0) + 1;
+    }
+     await post.save();
+
+    return res.status(200).json({
+      likes: post.likes,
+      liked: !alreadyLiked
+    });
+  } catch (err) {
+    console.error('Error in /update/:id/like:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 module.exports = router;
 

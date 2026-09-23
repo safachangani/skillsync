@@ -5,7 +5,7 @@ import axios from "../../axios";
 import { io } from 'socket.io-client'
 import noChat from '../../assets/no-chat.svg'
 
-const socket = io("https://skillsync-backend-xiwx.onrender.com")
+const socket = io(process.env.REACT_APP_API_URL)
 const Messages = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null)
@@ -65,7 +65,7 @@ const Messages = () => {
     }
 
 
-  }, [])
+  }, [myId])
 
   // Second useEffect: wait for myId and emit join
   useEffect(() => {
@@ -130,7 +130,7 @@ const UserList = ({ partners, onSelect, setMessageHistory }) => {
               handleSelectPartner(partner)
 
             }}>
-              <img alt={partner.partnerProfile.username} src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${partner.partnerProfile.filename}`} className="user-avatar" />
+              <img alt={partner.partnerProfile.username} src={`${process.env.REACT_APP_API_URL}/skillsync/uploads/${partner.partnerProfile.filename}`} className="user-avatar" />
               <div className="user-info">
                 <div className="user-name">{partner.partnerProfile.username}</div>
    <p className="skills">
@@ -229,7 +229,7 @@ const ChatSection = ({ selectedPartner, myId, messageHistory, setMessageHistory 
 
     <div className="chat-section">
       <div className="chat-header">
-        <img src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${selectedPartner.partnerProfile.filename}`} alt="User" className="user-avatar" />
+        <img src={`${process.env.REACT_APP_API_URL}/skillsync/uploads/${selectedPartner.partnerProfile.filename}`} alt="User" className="user-avatar" />
         <div className="chat-header-info">
           <div className="chat-user-name">{selectedPartner.partnerProfile.username}</div>
           <span>{selectedPartner.postTitle}</span>

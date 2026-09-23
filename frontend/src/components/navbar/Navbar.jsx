@@ -9,6 +9,7 @@ import {
   UserCircleIcon,
   UsersIcon
 } from '@heroicons/react/24/outline';
+import { useAuth } from '../../context/AuthContext';
 
 function Navbar({ openPostPopup }) {
   const [name, setName] = useState('');
@@ -18,7 +19,7 @@ function Navbar({ openPostPopup }) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(null);
-
+ const { user, setUser } = useAuth();
   // Separate refs for each dropdown container:
   const profileRef = useRef();
   const notificationRef = useRef();
@@ -166,7 +167,60 @@ function Navbar({ openPostPopup }) {
             <img src={logo} alt="SkillSync" />
           </Link>
         </div>
+          <div className="nav-center">
+            <Link to="/home" className="br-profile">Discover</Link>
+            <Link to="/my-partners" className="nav-link">
+              <ChatBubbleOvalLeftIcon className="nav-icon" />
+              <span className="link-text">Messages</span>
+            </Link>
+            <Link to="/browse-profiles" className="br-profile">Explore People</Link>
+          </div>
         <div className='elements'>
+       
+          <Link className="post" onClick={checkProfileData}>
+            <button className='btn-filled'>Post Skill</button>
+          </Link>
+
+          {/* Profile dropdown */}
+          <div className="profile-dropdown-container" ref={profileRef}>
+            <div
+              className="navigation-link profile-toggle"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowProfileDropdown(prev => !prev);
+              }}
+            >
+              {filename ?
+              (
+              <img className="nav-icon"  
+              // src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${filename}`}
+              src={`${process.env.REACT_APP_API_URL}/skillsync/uploads/${filename}`}
+               alt=""
+               />
+              ):(
+                <UserCircleIcon className="nav-icon" />
+
+              )}
+              
+             {console.log(name)}
+              
+              <span className="username">{name}</span>
+            </div>
+            {showProfileDropdown && (
+              <div className="profile-dropdown" onClick={e => e.stopPropagation()}>
+                <Link to="/my-profile" className="dropdown-item">
+                  My Profile
+                </Link>
+                <Link to="/my-partners-list" className="dropdown-item">
+                  My Partners
+                </Link>
+                <div onClick={handleLogout} className="dropdown-item logout">
+                  Logout
+                </div>
+              </div>
+            )}
+          </div>
+
         {/* ─── Move notification-wrapper out of navigation-icons ─── */}
         <div className="notification-wrapper" ref={notificationRef}>
           <button
@@ -220,61 +274,6 @@ function Navbar({ openPostPopup }) {
           )}
         </div>
 
-        {/* ─── Desktop-only links & profile dropdown ─── */}
-        <div className="navigation-icons">
-          <Link to="/home" className="br-profile">
-            Home
-          </Link>
-
-          <Link to="/my-partners" className="nav-link">
-            <ChatBubbleOvalLeftIcon className="nav-icon" />
-            <span className="link-text">Messages</span>
-          </Link>
-
-          <Link to="/browse-profiles" className="br-profile">
-            Browse Profiles
-          </Link>
-
-          {/* Profile dropdown */}
-          <div className="profile-dropdown-container" ref={profileRef}>
-            <div
-              className="navigation-link profile-toggle"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowProfileDropdown(prev => !prev);
-              }}
-            >
-              {filename ?
-              (<img className="nav-icon"  src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${filename}`} alt="" />
-
-              ):(
-                <UserCircleIcon className="nav-icon" />
-
-              )}
-              
-             {console.log(name)}
-              
-              <span className="username">{name}</span>
-            </div>
-            {showProfileDropdown && (
-              <div className="profile-dropdown" onClick={e => e.stopPropagation()}>
-                <Link to="/my-profile" className="dropdown-item">
-                  My Profile
-                </Link>
-                <Link to="/my-partners-list" className="dropdown-item">
-                  My Partners
-                </Link>
-                <div onClick={handleLogout} className="dropdown-item logout">
-                  Logout
-                </div>
-              </div>
-            )}
-          </div>
-
-          <Link className="post" onClick={checkProfileData}>
-            <button>Post</button>
-          </Link>
-        </div>
          </div>
       </div>
 

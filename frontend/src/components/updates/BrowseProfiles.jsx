@@ -104,7 +104,9 @@ function BrowseProfiles() {
 
             {/* Avatar */}
             <img
-              src={`http://localhost:9000/skillsync/uploads/${p.filename}`}
+              src={`${process.env.REACT_APP_API_URL}/skillsync/uploads/${p.filename}`}
+              // src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${update.filename}`}
+
               alt={p.username}
               className="partner-avatar"
             />

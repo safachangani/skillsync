@@ -71,7 +71,7 @@ return (
             <div className="partner-top-bg" />
             <img
               className="partner-list-avatar"
-              src={`https://skillsync-backend-xiwx.onrender.com/skillsync/uploads/${partner.partnerProfile.filename}`}
+              src={`${process.env.REACT_APP_API_URL}/skillsync/uploads/${partner.partnerProfile.filename}`}
               alt={partner.partnerProfile.username}
             />
             <h3 className="partner-name">{partner.partnerProfile.username}</h3>

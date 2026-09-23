@@ -15,9 +15,11 @@ import ProfileDetail from './pages/ProfileDetail';
 
 import RequireAuth from './components/RequireAuth';
 import RequireNoAuth from './components/RequireNoAuth';
+import { AuthProvider } from './context/AuthContext';
 function App() {
   return (
     <Router>
+    <AuthProvider>
       <Routes>    
         <Route path="/" element={<RequireNoAuth> <Login /></RequireNoAuth> } />
         <Route path="/signup"  element={<RequireNoAuth> <Signup /></RequireNoAuth>}/>
@@ -34,6 +36,7 @@ function App() {
          <Route path="/profile-visit" element={<ProfileDetail />} />
 
       </Routes>
+    </AuthProvider>
     </Router>
   )
 }

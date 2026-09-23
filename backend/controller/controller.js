@@ -21,7 +21,15 @@ const postRequestOfferSchema = new mongoose.Schema({
   description: String,
   skills: [String],
   createdAt: Date,
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  likes: {
+    type: Number,
+    default: 0
+  },
+  likedBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Signup'
+  }]
 });
 // Create mongoose model
 const PostRequestOffer = mongoose.model('PostRequestOffer', postRequestOfferSchema);

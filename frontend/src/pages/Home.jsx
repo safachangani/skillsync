@@ -6,6 +6,7 @@ import Welcome from '../components/updates/Welcome'
 import Search from '../components/browse/Search'
 import Post from '../components/forms/Post'
 import axios from '../axios'
+import TaglineStrip from '../components/TaglineStrip'
 function Home() {
   const [showPostPopup,setShowPostPopup] =useState();
   const [isProfileComplete,setIsProfileComplete] = useState(false);
@@ -46,6 +47,7 @@ function Home() {
         <Update/>
 
         {showPostPopup && <Post onClose={closePostPopup} />} {/* conditional popup */}
+        <TaglineStrip/>
     </div>
   )
 }

@@ -3,8 +3,7 @@
   text-align: center;
   margin: 2.5rem 0;
   border-radius: 1rem;
-  
-  max-width: 600px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -13,7 +12,13 @@
   font-size: 1.75rem;
   font-weight: 600;
   color: #111827;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 1.75rem;
 }
 
 .quick-search-bar {
@@ -24,12 +29,29 @@
   flex-wrap: wrap;
 }
 
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 420px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
 .quick-search-input {
-  padding: 0.75rem 1rem;
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.75rem;
   font-size: 1rem;
   border: 1px solid #d1d5db;
-  border-radius: 0.75rem;
-  width: 280px;
+  border-radius: 999px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
@@ -43,11 +65,11 @@
 .quick-search-button {
   background: linear-gradient(90deg, #6366f1, #8b5cf6);
   color: #fff;
-  padding: 0.75rem 1.5rem;
+  padding: 0.85rem 1.75rem;
   font-size: 1rem;
   font-weight: 500;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 999px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.1s ease;
   box-shadow: 0 3px 8px rgba(99, 102, 241, 0.2);
@@ -58,10 +80,41 @@
   transform: translateY(-1px);
 }
 
+.category-pills {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.category-pill {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #4b5563;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.category-pill:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.category-pill.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}
+
 .browse-link {
   font-size: 0.9rem;
   color: #6b7280;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .browse-link a {
@@ -75,20 +128,11 @@
   color: #4f46e5;
 }
 
-
 @media (max-width: 480px) {
   .quick-search-bar {
     flex-direction: column;
     gap: 0.75rem;
   }
-
-  .quick-search-input {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .quick-search-button {
-    width: 100%;
-  }
+  .search-input-wrapper { max-width: 100%; }
+  .quick-search-button { width: 100%; }
 }
-

@@ -1,343 +1,180 @@
-/* update.css */
 .updates-section {
   max-width: 1200px;
-  margin: 0 auto 2rem; /* center and add bottom margin */
+  margin: 0 auto 2rem;
   padding: 0 1rem;
 }
-.updates-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
+
+.updates-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
-/* ============================================
-   Container: grid of all update cards
-   ============================================ */
 
 .updates-heading {
-  font-size: 1.75rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: #111827;
-  margin-bottom: 1.25rem;
-  text-align: center;
 }
 
-/* ============================================
-   Each card’s base styles
-   ============================================ */
+.updates-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
 .update-card {
   position: relative;
+  background: #fff;
+  border: 1px solid #f0f0f0;
   border-radius: 1rem;
-  overflow: hidden;
-      display: flex;
-    flex-direction: column;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-article .card-content .post-description {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;     /* number of lines */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-}
+
 .update-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* ============================================
-   Top “gradient” bar (avatar + tab)
-   ============================================ */
-.card-top {
-  position: relative;
+.card-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding-top: 1.5rem;
-  /* padding-bottom: 2rem;  */
+  gap: 0.7rem;
 }
 
-/* The avatar circle (overlapping the white content below) */
-.user-avatar {
-  width: 100px;
-  height: 100px;
-  border: 2px solid #ffffff;
+.user-avatar,
+.avatar-initials {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  object-fit: cover;
-  z-index: 2;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-  background-color: white;
-  position: relative;
-  margin: .7rem;
+  flex-shrink: 0;
 }
 
-/* Tab label just below avatar */
-.post-tag {
-  margin: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #111827;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 0.75rem;
-  text-transform: uppercase;
-  z-index: 1;
-}
+.user-avatar { object-fit: cover; }
 
-/* ============================================
-   White “bottom” block (content area)
-   ============================================ */
-.card-content {
-  background-color: #ffffff;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap:1rem
-}
-
-/* ============================================
-   Bookmark icon (top-right corner)
-   ============================================ */
-.bookmark-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
-  border-radius: 50%;
-  padding: 0.4rem;
+.avatar-initials {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
-  z-index: 3;
-}
-
-.bookmark-btn:hover {
-  background: rgba(255, 255, 255, 1);
-}
-
-.bookmark-icon {
-  width: 20px;
-  height: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
   color: #374151;
 }
 
-/* ============================================
-   Post heading & description
-   ============================================ */
-.post-heading {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
-  /* margin-bottom: 0.5rem; */
-  /* line-height: 1.3; */
+.header-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
- .card-content .post-description {
-  font-size: 0.9rem;
+.username-line {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #111827;
+}
+
+.time-line {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+.bookmark-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 0.2rem;
+}
+.bookmark-btn:hover { color: #6366f1; }
+.bookmark-icon { width: 18px; height: 18px; }
+
+.post-tag {
+  align-self: flex-start;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.post-tag.type-offer { background: #DCFCE7; color: #16A34A; }
+.post-tag.type-request { background: #EDE9FE; color: #7C3AED; }
+.post-tag.type-discussion { background: #FFEDD5; color: #EA580C; }
+.post-tag.type-showcase { background: #DBEAFE; color: #2563EB; }
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.post-heading {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.post-description {
+  font-size: 0.88rem;
   color: #4b5563;
   line-height: 1.5;
-  /* margin-bottom: 1.5rem; */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* ============================================
-   Footer: action icons + “View Details”
-   ============================================ */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-tag {
+  background: #F3F4F6;
+  color: #4b5563;
+  font-size: 0.76rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
 .post-footer {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-top: auto; /* push it to bottom if content is short */
-  flex-direction: column;
-  gap: .5rem;
+  align-items: center;
+  margin-top: 0.3rem;
 }
-hr{
-  width: 100%;
-  height: .01rem;
-  border: none;
-  background-color: #00000038;
-}
+
 .post-actions {
   display: flex;
-  gap: 1.25rem;
-  width: 100%;
-  justify-content: space-around;
+  gap: 1rem;
 }
 
 .action-btn {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  background: transparent;
+  gap: 0.3rem;
+  background: none;
   border: none;
   cursor: pointer;
-  color: inherit; /* inherit from parent color */
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-}
-
-.action-btn:hover {
-  color: #111827;
-}
-
-.action-icon {
-  width: 20px;
-  height: 20px;
-}
-
-.action-count {
+  color: #6b7280;
   font-size: 0.85rem;
-  font-weight: 500;
 }
+.action-btn:hover { color: #EF4444; }
+.action-icon { width: 18px; height: 18px; }
+.action-count { font-weight: 500; }
 
-/* “View Details →” link */
 .view-details-link {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6366f1;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
-
-.view-details-link:hover {
-  color: #4f46e5; /* default accent if none overridden */
-}
-
-/* ============================================
-   Gradients by “type-<tab>”
-   (You can tweak these pastel stops to match your brand.)
-   ============================================ */
-
-/* OFFER (purple pastel) */
-.update-card.type-offer{
-  /* background: linear-gradient(135deg, #f3e8ff 0%, #f9d6ff 100%); */
-  background: linear-gradient(135deg,#f9f5ff  0%, #e9c5ff 100%);
-
-}
-
-.update-card.type-offer .view-details-link,
-.update-card.type-offer .action-btn{
-  color: #8b5cf6;
-}
-.update-card.type-offer .view-details-link:hover {
-  color: #7c3aed;
-}
-.update-card.type-offer .post-tag {
-  background-color:rgb(175, 135, 245);
-  font-weight: 100;
-}
-
-/* REQUEST (blue pastel) */
-.update-card.type-request
-
-{
-  /* background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); */
-background: linear-gradient(135deg, #eaf7ff 0%, #d4e7ff 50%, #c0d4ff 100%);
-
-}
-
-.update-card.type-request .view-details-link,
-.update-card.type-request .action-btn
-{
-  color: #3b82f6;
-}
-.update-card.type-request .view-details-link:hover {
-  color: #2563eb;
-}
-.update-card.type-request .post-tag {
-  background-color: #84b9fa;
-  font-weight: 100;
-}
-/* DESCUSSION (orange pastel) */
-.update-card.type-discussion  {
-  background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
-}
-
-.update-card.type-discussion .view-details-link,
-.update-card.type-discussion .action-btn {
-  color: #fb923c;
-}
-.update-card.type-discussion .view-details-link:hover {
-  color: #f97316;
-}
-
-/* SHOWCASE (mint pastel) */
-.update-card.type-showcase {
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-}
-
-.update-card.type-showcase .view-details-link,
-.update-card.type-showcase .action-btn {
-  color: #10b981;
-}
-.update-card.type-showcase .view-details-link:hover {
-  color: #059669;
-}
-
-/* If you have additional tabs (e.g. “Help”, “Mentor”), define them similarly:
-   .update-card.type-help .card-top { background: … }
-   .update-card.type-help .view-details-link { color: … }
-*/
-
-/* ============================================
-   Responsive adjustments
-   ============================================ */
-@media (max-width: 768px) {
-  .updates-container {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
-  }
-
-  .post-heading {
-    font-size: 1rem;
-  }
-
-  .post-description {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-}
+.view-details-link:hover { color: #4f46e5; }
 
 @media (max-width: 480px) {
-  .updates-container {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-  }
-
-  .card-top {
-    padding-top: 1.25rem;
-    /* padding-bottom: 1.75rem; */
-  }
-
-  .user-avatar {
-    width: 90px;
-    height: 90px;
-    border-width: 2px;
-  }
-
-  .post-heading {
-    font-size: 0.95rem;
-  }
-
-  .post-description {
-    font-size: 0.875rem;
-  }
-
-  .post-actions {
-    gap: 0.75rem;
-  }
-  .card-content{
-    text-align: center;
-  }
+  .updates-container { grid-template-columns: 1fr; }
 }
-/* Gradient in Hex */
-/* linear-gradient(to right, #E4F6FF 0%, 27.2988498210907%, #C4DFFF 54.5976996421814%, 77.2988498210907%, #B7D2FD 100%); */
-
-/* Gradient in RGBA */
-/* linear-gradient(to right, rgba(228, 246, 255, 1) 0%, 27.2988498210907%, rgba(196, 223, 255, 1) 54.5976996421814%, 77.2988498210907%, rgba(183, 210, 253, 1) 100%); */
