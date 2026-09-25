@@ -36,32 +36,33 @@ const Profile = () => {
 
         {/* ─── 1) HEADER AREA ─────────────────────────────────────────────────────── */}
         <header className="profile-header">
-         
-            <div className="avatar-container">
-              <img
-                className="profile-avatar"
-                src={
-                  profile.filename
-                    ? `${process.env.REACT_APP_API_URL}/uploads/${profile.filename}`
-                    : defaultImage
-                }
-                alt="Profile"
-              />
-            </div>
 
-            {/* Name / Username / Location */}
-            <div className="profile-basic-text">
-              <h1 className="profile-name">{profile.fullName}</h1>
-             {profile.username && <p className="profile-username">@{profile.username}</p>}
-              {profile.location && (
-                <p className="profile-location">📍 {profile.location}</p>
-              )}
-            </div>
+          <div className="avatar-container">
+            <img
+              className="profile-avatar"
+              src={
+                profile.filename
+                  ? `${process.env.REACT_APP_API_URL}/skillsync/uploads/${profile.filename}`
+                  : defaultImage
+              }
+              alt="Profile"
+            />
+          </div>
 
-            {/* Edit Button */}
-            <Link to="/edit-profile" className="edit-profile-button">
-              Edit Profile
-            </Link>
+          {/* Name / Username / Location */}
+          <div className="profile-basic-text">
+            <h1 className="profile-name">{profile.fullName}</h1>
+            {profile.username && <p className="profile-username">@{profile.username}</p>}
+            {profile.location && <p className="profile-location">📍 {profile.location}</p>}
+            {profile.skills && profile.skills.length > 0 && (
+              <span className="status-pill">Open to Collaborate</span>
+            )}
+          </div>
+
+          {/* Edit Button */}
+          <Link to="/edit-profile" className="edit-profile-button">
+            Edit Profile
+          </Link>
           {/* </div> */}
         </header>
 
@@ -120,52 +121,52 @@ const Profile = () => {
               <div className="header-accent social-accent" />
               <h2 className="card-title">Social Links</h2>
             </div>
-   <div className="social-buttons">
-      {profile.linkedinURL && (
-        <a
-          href={profile.linkedinURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="social-button linkedin"
-        >
-          {/* BriefcaseIcon used for LinkedIn */}
-          <BriefcaseIcon className="icon" aria-hidden="true" />
-          <span>LinkedIn</span>
-        </a>
-      )}
+            <div className="social-buttons">
+              {profile.linkedinURL && (
+                <a
+                  href={profile.linkedinURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-button linkedin"
+                >
+                  {/* BriefcaseIcon used for LinkedIn */}
+                  <BriefcaseIcon className="icon" aria-hidden="true" />
+                  <span>LinkedIn</span>
+                </a>
+              )}
 
-      {profile.githubURL && (
-        <a
-          href={profile.githubURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="social-button github"
-        >
-          {/* CodeBracketIcon used for GitHub */}
-          <CodeBracketIcon className="icon" aria-hidden="true" />
-          <span>GitHub</span>
-        </a>
-      )}
+              {profile.githubURL && (
+                <a
+                  href={profile.githubURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-button github"
+                >
+                  {/* CodeBracketIcon used for GitHub */}
+                  <CodeBracketIcon className="icon" aria-hidden="true" />
+                  <span>GitHub</span>
+                </a>
+              )}
 
-      {profile.websiteURL && (
-        <a
-          href={profile.websiteURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="social-button website"
-        >
-          {/* GlobeAltIcon used for Portfolio/Website */}
-          <GlobeAltIcon className="icon" aria-hidden="true" />
-          <span>Portfolio</span>
-        </a>
-      )}
+              {profile.websiteURL && (
+                <a
+                  href={profile.websiteURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-button website"
+                >
+                  {/* GlobeAltIcon used for Portfolio/Website */}
+                  <GlobeAltIcon className="icon" aria-hidden="true" />
+                  <span>Portfolio</span>
+                </a>
+              )}
 
-      {!profile.linkedinURL &&
-        !profile.githubURL &&
-        !profile.websiteURL && (
-          <p className="no-links">No social links added yet.</p>
-        )}
-    </div>
+              {!profile.linkedinURL &&
+                !profile.githubURL &&
+                !profile.websiteURL && (
+                  <p className="no-links">No social links added yet.</p>
+                )}
+            </div>
 
           </div>
         </div>
