@@ -293,6 +293,19 @@
   transform: translateY(-1px);
 }
 
+.accept-btn.pending,
+.accept-btn.declined {
+  background: #E5E7EB;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.accept-btn.accepted {
+  background: #DCFCE7;
+  color: #16A34A;
+  cursor: default;
+}
+
 /* Ensure the buttons shrink nicely on small screens */
 @media (max-width: 640px) {
   .action-section {
