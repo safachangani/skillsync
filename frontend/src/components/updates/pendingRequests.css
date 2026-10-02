@@ -1,0 +1,33 @@
+.pending-requests-section {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.pending-card {
+  background: #fff;
+  border: 1px solid #EEF0F3;
+  border-left: 3px solid #6366F1;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.pending-text { font-size: 0.9rem; color: #374151; flex: 1; }
+
+.pending-actions { display: flex; gap: 0.5rem; }
+
+.accept-small, .decline-small {
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.accept-small { background: #6366F1; color: #fff; }
+.decline-small { background: #F3F4F6; color: #4b5563; }

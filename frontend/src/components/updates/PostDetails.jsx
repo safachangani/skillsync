@@ -9,7 +9,20 @@ const PostDetails = () => {
   const [isUserPost, setIsUserPost] = useState(false);
   const stateLocation = useLocation();
   const postId = stateLocation.state?.data;
-
+  const [requestStatus, setRequestStatus] = useState('idle');
+  const getButtonLabel = () => {
+    const isOffer = updateData.type === 'offer';
+    switch (requestStatus) {
+      case 'pending':
+        return isOffer ? 'Interest Sent' : 'Response Sent'
+      case 'accepted':
+        return "Connected";
+      case 'declined':
+        return 'request Declined'
+      default:
+        return isOffer ? "I'm Interested" : 'Offer to Help'
+    }
+  }
   useEffect(() => {
     const fetchUpdateData = async () => {
       try {
@@ -24,10 +37,21 @@ const PostDetails = () => {
         const userResponse = await axios.get('/get-userId', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const fetchedUserId = userResponse.data.userId;
-        setMyId(fetchedUserId);
+        const currentUserId= userResponse.data.userId;
+        setMyId(currentUserId);
+        const ownPost = fetchedUpdateData.userId === currentUserId;
+        setIsUserPost(ownPost)
         
-        setIsUserPost(fetchedUpdateData.userId === fetchedUserId);
+        if (!ownPost) {
+            const statusResponse = await axios.get(`/connections/status/${postId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            
+          if (statusResponse.data.status !== 'none') {
+            setRequestStatus(statusResponse.data.status);
+          }
+
+        }
       } catch (error) {
         console.error('Error fetching update data:', error);
       }
@@ -36,6 +60,25 @@ const PostDetails = () => {
     if (postId) fetchUpdateData();
   }, [postId]);
 
+  const sendConnectionRequest = async () => {
+    try {
+      const token = localStorage.getItem('user-token');
+      await axios.post('/connections/request',
+        {
+          recipientUserId: updateData.userId,
+          postId: updateData._id
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setRequestStatus('pending') // temporary, just to confirm it worked — we'll replace with something nicer later
+    } catch (err) {
+      if (err.response?.status === 400) {
+        setRequestStatus('pending'); // "Request already sent."
+      } else {
+        console.error('Error sending connection request:', err);
+      }
+    }
+  }
   if (!updateData) return <div className="loading">Loading post details...</div>;
 
   const {
@@ -49,22 +92,22 @@ const PostDetails = () => {
     skills,
     profileId
   } = updateData;
-// In your React component:
-const sendNotification = async () => {
-  try {
-    const payload = {
-      postId: updateData._id,
-      recipientUserId: updateData.userId,
-      prefix: `Your ${updateData.type.charAt(0).toUpperCase() + updateData.type.slice(1)} “${updateData.title}” has been accepted by `
-    };
-    const token = localStorage.getItem('user-token');
-    await axios.post('/send-notification', payload, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
+  // In your React component:
+  const sendNotification = async () => {
+    try {
+      const payload = {
+        postId: updateData._id,
+        recipientUserId: updateData.userId,
+        prefix: `Your ${updateData.type.charAt(0).toUpperCase() + updateData.type.slice(1)} “${updateData.title}” has been accepted by `
+      };
+      const token = localStorage.getItem('user-token');
+      await axios.post('/send-notification', payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="post-details-container">
@@ -82,13 +125,13 @@ const sendNotification = async () => {
             <span className={`tag-pill type-${type.toLowerCase()}`}>
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </span>
-           <span className="meta-info">
-  <strong>By</strong>{' '}
- 
-  <Link to="/profile-visit" state={{ profileId: profileId }} className="meta-link">
-    {username}
-  </Link>
-</span>
+            <span className="meta-info">
+              <strong>By</strong>{' '}
+
+              <Link to="/profile-visit" state={{ profileId: profileId }} className="meta-link">
+                {username}
+              </Link>
+            </span>
 
           </div>
           <div className="meta-right">
@@ -131,7 +174,13 @@ const sendNotification = async () => {
               <button className="edit-btn">Edit Post</button>
             </>
           ) : (
-            <button className="accept-btn " onClick={sendNotification}>Accept</button>
+            <button
+              className={`accept-btn ${requestStatus !== 'idle' ? requestStatus : ''}`}
+              onClick={sendConnectionRequest}
+              disabled={requestStatus !== 'idle'}
+            >
+              {getButtonLabel()}
+            </button>
           )}
         </div>
       </div>

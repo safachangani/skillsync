@@ -5,6 +5,8 @@ import './home.css'
 import Welcome from '../components/updates/Welcome'
 import Search from '../components/browse/Search'
 import Post from '../components/forms/Post'
+
+import PendingRequests from '../components/updates/PendingRequests';
 import axios from '../axios'
 import TaglineStrip from '../components/TaglineStrip'
 function Home() {
@@ -44,6 +46,7 @@ function Home() {
         <Navbar openPostPopup={openPostPopup} /> {/* pass function to Navbar */}
         <Welcome isProfileComplete={isProfileComplete} openPostPopup={openPostPopup}/>
         <Search/>
+        <PendingRequests></PendingRequests>
         <Update/>
 
         {showPostPopup && <Post onClose={closePostPopup} />} {/* conditional popup */}

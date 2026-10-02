@@ -118,13 +118,21 @@ const commentSchema = new mongoose.Schema({
 // Create the Comment model
 const Comment = mongoose.model('Comment', commentSchema);
 
+const ConnectionSchema = new mongoose.Schema({
+  requesterId:{type:mongoose.Schema.Types.ObjectId,ref:"Signup",required:true},
+  recipientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Signup', required: true },
+  postId: { type: mongoose.Schema.Types.ObjectId, ref: 'PostRequestOffer', required: true },
+  status: {type:String,enum:['pending','accepted','declined'],default:'pending'}
+},{timestamps:true})
 
+const  Connection = mongoose.model('Connection', ConnectionSchema);
 
 // Export both model and schema
 module.exports = {
     Signup,
     PostRequestOffer,
     UserProfile,
+    Connection,
     Notification,
     Partner,
     Message,

@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const passport  = require("passport");
-const { Signup, PostRequestOffer, UserProfile, Notification, Partner, Message, Comment} = require('../controller/controller');
+const { Signup, PostRequestOffer, UserProfile,Connection, Notification, Partner, Message, Comment} = require('../controller/controller');
 const saltRounds = 10;
 const { OAuth2Client } = require('google-auth-library');
 // const jwt = require('jsonwebtoken');
@@ -599,6 +599,84 @@ router.post('/partners/accept',authenticateToken,async (req, res) => {
   }
   }
 );
+
+router.post('/connections/request',authenticateToken,async(req,res)=>{
+  try {
+    const { recipientUserId, postId } = req.body;
+    const requesterId = req.user._id;
+
+    // prevent duplicate pending requests
+    const existing = await Connection.findOne({ requesterId, recipientId: recipientUserId, postId });
+    if (existing) {
+      return res.status(400).json({ message: 'Request already sent.' });
+    }
+
+    const connection = await Connection.create({
+      requesterId,
+      recipientId: recipientUserId,
+      postId,
+      status: 'pending'
+    });
+    res.status(201).json({ connection });
+     } catch (err) {
+    console.error('Error creating connection request:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+})
+
+router.get('/connections/pending',authenticateToken,async(req,res)=>{
+  try{
+    const recipientId = req.user._id;
+    const pending = await Connection.find({ recipientId, status: 'pending' })
+      .sort({ createdAt: -1 })
+      .lean();
+
+      const enriched = await Promise.all(pending.map(async(conn)=>{
+        const requesterProfile = await UserProfile.findOne({ userId: conn.requesterId }).lean();
+        const post = await PostRequestOffer.findById(conn.postId).lean();
+        return {
+          _id: conn._id,
+          requesterId: conn.requesterId,
+          requesterName: requesterProfile?.username || 'Someone',
+          requesterImg: requesterProfile?.filename,
+          postId: post?._id,
+          postTitle: post?.title || 'a post',
+          postType: post?.type || 'request',
+          createdAt: conn.createdAt
+        };
+    
+      }))
+         res.status(200).json({ pending: enriched });
+  } catch (err) {
+    console.error('Error fetching pending connections:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+})
+
+router.post('/connections/:id/respond', authenticateToken, async (req, res) => {
+  try {
+    const { action } = req.body; // 'accepted' | 'declined'
+    if (!['accepted', 'declined'].includes(action)) {
+      return res.status(400).json({ error: 'Invalid action.' });
+    }
+
+    const connection = await Connection.findOneAndUpdate(
+      { _id: req.params.id, recipientId: req.user._id, status: 'pending' },
+      { status: action },
+      { new: true }
+    );
+
+    if (!connection) {
+      return res.status(404).json({ error: 'Request not found or already handled.' });
+    }
+
+    res.status(200).json({ connection });
+  } catch (err) {
+    console.error('Error responding to connection:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
 router.get('/get-profile', authenticateToken, async (req, res) => {
     try {
         // Fetch profile data from the database based on the user ID in the token
@@ -618,38 +696,32 @@ router.get('/get-profile', authenticateToken, async (req, res) => {
 })
 
 router.get('/get-partners', authenticateToken, async (req, res) => {
-    try {
-        const partner = await Partner.findOne({ userId: req.user._id });
-        // console.log(partner);
-        if (partner) {
-            const partnerData = [];
+   try{
+    const myId = req.user._id;
+    const connections = await Connection.find({
+      status: 'accepted',
+      $or: [{ requesterId: myId }, { recipientId: myId }]
+    }).lean();
 
-            // Iterate over partnerIds array
-            for (const partnerIdObj of partner.partnerIds) {
-                // Get profile of the partner
-                const partnerProfile = await UserProfile.findOne({ userId: partnerIdObj.partnerId });
-                // console.log(partnerProfile);
-                // Get post details using postId
-                const post = await PostRequestOffer.findById(partnerIdObj.postId);
-                // console.log('o',post);
-                // Construct partner data object
-                const partnerObj = {
-                    partnerProfile,
-                    postTitle: post.heading,
-                    postId: post._id
-                };
+     const partnerData = await Promise.all(connections.map(async (conn) => {
+      const otherUserId = conn.requesterId.toString() === myId.toString()
+        ? conn.recipientId
+        : conn.requesterId;
+              const partnerProfile = await UserProfile.findOne({ userId: otherUserId }).lean();
+      const post = await PostRequestOffer.findById(conn.postId).lean();
 
-                partnerData.push(partnerObj);
-            }
-            // Send partner data as response
-            res.status(200).json({ partnerData: partnerData, myId: req.user._id });
-        } else {
-            res.status(404).json({ message: 'Partner not found' });
-        }
-    } catch (error) {
-        console.error('Error fetching partners:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+      return {
+        partnerProfile,
+        postTitle: post?.title || 'Untitled',
+        postId: conn.postId
+      };
+    }));
+
+    res.status(200).json({ partnerData, myId });
+     } catch (error) {
+    console.error('Error fetching partners:', error);
+    res.status(500).json({ error: 'Internal server error' });
+   }
 });
 
 router.get('/get-update/:id', authenticateToken, async (req, res) => {
@@ -798,13 +870,25 @@ router.get('/auth/google/callback',
     }
 );
 
+router.get('/connections/status/:postId', authenticateToken, async (req, res) => {
+  try {
+    const requesterId = req.user._id;
+    const { postId } = req.params;
+
+    const connection = await Connection.findOne({ requesterId, postId });
+    res.status(200).json({ status: connection ? connection.status : 'none' });
+  } catch (err) {
+    console.error('Error checking connection status:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
 
 
 
   // GET profile by ID
 router.get("/profile-visit/:id", async (req, res) => {
   try {
-      console.log("user profile ");
+  
     const profile = await UserProfile.findById(req.params.id);
     
 
