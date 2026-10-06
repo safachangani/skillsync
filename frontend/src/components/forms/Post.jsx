@@ -5,15 +5,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from '../../axios';
 import { requestOfferSchema } from '../../validation/UserValidation';
-import { useNavigate } from 'react-router-dom';
 
-function Post({ onClose }) {
-  const navigate = useNavigate();
+
+function Post({postId, onClose, onSuccess }) {
+
 
   // Local state for dynamic skills
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState('');
-const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Local state for toggle ("request" or "offer"), default is "request"
   const [type, setType] = useState('request');
@@ -41,7 +41,34 @@ const [successMessage, setSuccessMessage] = useState('');
     setSkills((prev) => [...prev, trimmed]);
     setNewSkill('');
   };
+  useEffect(()=>{
+    if(!postId) return;
+    const token = localStorage.getItem('user-token');
+    const fetchData = async()=>{
+      try{
 
+        const response = await axios.get(`/post-request-offer/${postId}`,  {
+          headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const post = response.data;
+      console.log(post,"post data");
+      
+      reset({
+        title:post.title || '',
+        type: post.type || 'request',
+        category:post.category || '',
+        description:post.description || ''
+      })
+      setSkills(post.skills || []);
+      setType(post.type || 'request');
+    }catch(error){
+      console.error('Error fetching post:', error);
+    }
+    
+  }
+  fetchData()
+  },[])
   const handleRemoveSkill = (idxToRemove) => {
     setSkills((prev) => prev.filter((_, idx) => idx !== idxToRemove));
   };
@@ -61,31 +88,42 @@ const [successMessage, setSuccessMessage] = useState('');
 
   /*** Form Submission ***/
   const onSubmit = async (data) => {
-    console.log("checking this page",data);
+   
     const token = localStorage.getItem('user-token');
     
     // Build payload including dynamic skills and createdAt
     const payload = {
       ...data,                    // { title, type, category, description }
       skills,                     // array of strings
-      createdAt: new Date().toISOString()
+      ...(postId ? {}: {createdAt: new Date().toISOString()})
     };
 
     try {
-      const response = await axios.post('/post-request-offer', payload, {
+      let response;
+      if(postId){
+        response = await axios.put(`/post-request-offer/${postId}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log('Post response:', response.data);
+      }else{
+          response = await axios.post('/post-request-offer', payload, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+      
        // Show success message
   setSuccessMessage('✅ Your post has been submitted!');
-      reset();           // clear the form fields
-      setSkills([]);     // clear skill badges
-      setNewSkill('');   // reset skill input
-      setType('request');
-      setValue('type', 'request');
-      setTimeout(()=>{
-        onClose()
-      },1500)
+  onSuccess?.(); 
+  if(!postId){
+
+    reset();           // clear the form fields
+    setSkills([]);     // clear skill badges
+    setNewSkill('');   // reset skill input
+    setType('request');
+    setValue('type', 'request');
+  }
+    setTimeout(()=>{
+      onClose()
+    },1500)
     } catch (error) {
       console.error('Error submitting post:', error);
      setSuccessMessage('❌ Failed to submit. Please try again.');

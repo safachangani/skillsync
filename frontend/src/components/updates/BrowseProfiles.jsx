@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
 import Navbar from '../navbar/Navbar';
 import './browse-profile.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function BrowseProfiles() {
   const [profiles, setProfiles] = useState([]);
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searched, setSearched] = useState(false);
-
+  const navigate = useNavigate()
   // Pagination state (2 rows × 3 columns)
   const perPage = 6;
   const [page, setPage] = useState(0);
@@ -63,7 +63,12 @@ function BrowseProfiles() {
   return (
     <>
       <Navbar />
-
+      {/* ─── Back Button ─── */}
+<div className="back-wrap">
+  <button onClick={() => navigate(-1)} className="back-link">
+    <span className="back-arrow">←</span> Back
+  </button>
+</div>
       {/* ─── Search Bar ───────────────────────────────────────────────────── */}
       <div className="search-container">
         <input

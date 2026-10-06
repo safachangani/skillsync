@@ -124,3 +124,8 @@
   stroke-width: 2;
 }
 
+.partners-header {
+  max-width: 1100px;   /* match your grid's max-width */
+  margin: 0 auto 24px;
+  padding-top: 16px;
+}

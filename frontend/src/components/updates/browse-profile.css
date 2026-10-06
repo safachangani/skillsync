@@ -333,3 +333,9 @@ body {
   text-overflow: ellipsis;
   max-height: 3em;
 }
+
+.back-wrap {
+  max-width: 1100px;      /* match your profile grid's max-width */
+  margin: 24px auto 0;
+  padding: 0 16px;
+}
