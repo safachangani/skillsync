@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../axios';
 import './post-details.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Post from '../forms/Post';
+import { useCallback } from 'react';
 const PostDetails = () => {
   const [updateData, setUpdateData] = useState(null);
   const [myId, setMyId] = useState(null);
@@ -10,6 +12,9 @@ const PostDetails = () => {
   const stateLocation = useLocation();
   const postId = stateLocation.state?.data;
   const [requestStatus, setRequestStatus] = useState('idle');
+  const [showEditPost, setShowEditPost] = useState(false)
+
+  const navigate = useNavigate()
   const getButtonLabel = () => {
     const isOffer = updateData.type === 'offer';
     switch (requestStatus) {
@@ -23,40 +28,40 @@ const PostDetails = () => {
         return isOffer ? "I'm Interested" : 'Offer to Help'
     }
   }
-  useEffect(() => {
-    const fetchUpdateData = async () => {
-      try {
-        const token = localStorage.getItem('user-token');
-        const response = await axios.get(`/get-update/${postId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const fetchedUpdateData = response.data.postReqOff;
-        setUpdateData(fetchedUpdateData);
-        // console.log(fetchUpdateData);
+  const fetchUpdateData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('user-token');
+      const response = await axios.get(`/get-update/${postId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const fetchedUpdateData = response.data.postReqOff;
+      setUpdateData(fetchedUpdateData);
+      // console.log(fetchUpdateData);
 
-        const userResponse = await axios.get('/get-userId', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const currentUserId= userResponse.data.userId;
-        setMyId(currentUserId);
-        const ownPost = fetchedUpdateData.userId === currentUserId;
-        setIsUserPost(ownPost)
-        
-        if (!ownPost) {
-            const statusResponse = await axios.get(`/connections/status/${postId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
-            
-          if (statusResponse.data.status !== 'none') {
-            setRequestStatus(statusResponse.data.status);
-          }
+      const userResponse = await axios.get('/get-userId', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const currentUserId = userResponse.data.userId;
+      setMyId(currentUserId);
+      const ownPost = fetchedUpdateData.userId === currentUserId;
+      setIsUserPost(ownPost)
 
+      if (!ownPost) {
+        const statusResponse = await axios.get(`/connections/status/${postId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
+        if (statusResponse.data.status !== 'none') {
+          setRequestStatus(statusResponse.data.status);
         }
-      } catch (error) {
-        console.error('Error fetching update data:', error);
-      }
-    };
 
+      }
+    } catch (error) {
+      console.error('Error fetching update data:', error);
+    }
+  });
+
+  useEffect(() => {
     if (postId) fetchUpdateData();
   }, [postId]);
 
@@ -109,8 +114,13 @@ const PostDetails = () => {
     }
   };
 
+
   return (
     <div className="post-details-container">
+
+      <button onClick={() => navigate(-1)} className="back-link">
+        <span className="back-arrow">←</span> Back
+      </button>
       <div className="banner">
         <div className="banner-gradient" />
       </div>
@@ -171,7 +181,16 @@ const PostDetails = () => {
         <div className="action-section">
           {isUserPost ? (
             <>
-              <button className="edit-btn">Edit Post</button>
+              <button onClick={() => {
+                setShowEditPost(true)
+              }} className="edit-btn">Edit Post</button>
+              {showEditPost && (
+                <Post postId={postId}
+                  onClose={() => setShowEditPost(false)}
+                  onSuccess={fetchUpdateData}
+                >
+                </Post>
+              )}
             </>
           ) : (
             <button

@@ -178,7 +178,6 @@ router.get('/get-user-profile', authenticateToken, async(req, res) => {
     res.json({ name: user.username, userId: req.user._id,filename:user.filename });
 });
 router.post('/post-request-offer', authenticateToken, (req, res) => {
-  console.log('📥 Incoming Post Data:', req.body);
 
   const { title, type, category, description, skills, createdAt } = req.body;
 
@@ -204,6 +203,34 @@ router.post('/post-request-offer', authenticateToken, (req, res) => {
     });
 });
 
+router.put('/post-request-offer/:id',authenticateToken, async(req,res)=>{
+  try{
+
+   const updatedPost =  await PostRequestOffer.findByIdAndUpdate(req.params.id,req.body,{new:true})
+   
+   if(!updatedPost){
+     return res.status(400).json({
+       message:'post not found'
+      })
+    }
+    return res.status(200).json({message:'post updated successfully'})
+  }catch(error){
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+router.get('/post-request-offer/:id',authenticateToken,async(req,res)=>{
+  try{
+
+   const post =  await PostRequestOffer.findOne({_id:req.params.id})
+   if(!post){
+    return res.status(404).send({message:"post not found"})
+   }
+    return res.status(200).json(post)
+  }catch(error){
+    return res.status(500).send({message:"Internal error"})
+  }
+})
 
 router.get('/get-updates', authenticateToken, async (req, res) => {
     try {

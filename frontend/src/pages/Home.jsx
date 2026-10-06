@@ -9,10 +9,12 @@ import Post from '../components/forms/Post'
 import PendingRequests from '../components/updates/PendingRequests';
 import axios from '../axios'
 import TaglineStrip from '../components/TaglineStrip'
+import { useNavigate } from 'react-router-dom'
+
 function Home() {
   const [showPostPopup,setShowPostPopup] =useState();
   const [isProfileComplete,setIsProfileComplete] = useState(false);
-  
+ 
   const openPostPopup = ()=>setShowPostPopup(true);
   const closePostPopup = ()=>{
     setShowPostPopup(false);
@@ -43,6 +45,7 @@ function Home() {
 
   return (
     <div className='home'>
+   
         <Navbar openPostPopup={openPostPopup} /> {/* pass function to Navbar */}
         <Welcome isProfileComplete={isProfileComplete} openPostPopup={openPostPopup}/>
         <Search/>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../axios';
 import './partners.css';
 import {
@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton'
 function Partners() {
   const [partners, setPartners] = useState([]);
   const [myId, setMyId] = useState('');
-
+  const navigate = useNavigate()
 
 
 
@@ -60,11 +60,15 @@ function Partners() {
     }
   };
 
-return (
+  return (
     <div className="partners-page">
-      <h1 className="partners-title">Partners</h1>
-      <p className="partners-subtitle">View and manage your collaborative partners.</p>
-
+      <div className="partners-header">
+        <button onClick={() => navigate(-1)} className="back-link">
+          <span className="back-arrow">←</span> Back
+        </button>
+        <h1 className="partners-title">Partners</h1>
+        <p className="partners-subtitle">View and manage your collaborative partners.</p>
+      </div>
       <div className="partners-list-grid">
         {partners.map(partner => (
           <div className="partner-list-card" key={partner._id}>
@@ -75,13 +79,13 @@ return (
               alt={partner.partnerProfile.username}
             />
             <h3 className="partner-name">{partner.partnerProfile.username}</h3>
-           <p className="partner-role">
-  {partner.partnerProfile.skills && partner.partnerProfile.skills.length > 0
-    ? partner.partnerProfile.skills
-        .map(skill => `${skill.name} (${skill.level})`)
-        .join(', ')
-    : 'No skills listed'}
-</p>
+            <p className="partner-role">
+              {partner.partnerProfile.skills && partner.partnerProfile.skills.length > 0
+                ? partner.partnerProfile.skills
+                  .map(skill => `${skill.name} (${skill.level})`)
+                  .join(', ')
+                : 'No skills listed'}
+            </p>
             <Link
               to={`/update/${partner.postId}`}
               state={{ data: partner.postId }}

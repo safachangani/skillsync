@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from '../../axios';
 import Navbar from '../navbar/Navbar';
 import './profile.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BriefcaseIcon, CodeBracketIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 const Profile = () => {
   const [profile, setProfile] = useState(null);
+   const navigate = useNavigate()
   const defaultImage =
     'https://png.pngitem.com/pimgs/s/150-1503945_transparent-user-png-default-user-image-png-png.png';
 
@@ -33,6 +34,10 @@ const Profile = () => {
 
       {/* ─── PROFILE WRAPPER ───────────────────────────────────────────────────────── */}
       <div className="profile-wrapper">
+
+        <button onClick={() => navigate(-1)} className="back-link">
+  <span className="back-arrow">←</span> Back
+</button>
 
         {/* ─── 1) HEADER AREA ─────────────────────────────────────────────────────── */}
         <header className="profile-header">
